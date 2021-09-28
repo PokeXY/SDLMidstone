@@ -23,16 +23,28 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent) {
 		switch (sdlEvent.key.keysym.scancode) {
 
 			case SDL_SCANCODE_W:
+				vel = Vec3(0.0f, moveSpeed, 0.0f);
+				break;
 
 			case SDL_SCANCODE_A:
+				vel = Vec3(-moveSpeed, 0.0f, 0.0f);
+				break;
 
 			case SDL_SCANCODE_S:
+				vel = Vec3(0.0f, -moveSpeed, 0.0f);
+				break;
 
 			case SDL_SCANCODE_D:
+				vel = Vec3(moveSpeed, 0.0f, 0.0f);
+				break;
 
 			default:
 				break;
 		}
+	}
+
+	if (sdlEvent.type == SDL_KEYUP) {
+		vel = Vec3(0.0f);
 	}
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEMOTION) {

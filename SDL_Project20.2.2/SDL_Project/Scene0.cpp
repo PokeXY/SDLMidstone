@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include "SDL_image.h"
 #include "Randomizer.h"
+#include "Physics.h"
 #include <iostream>
 
 
@@ -13,6 +14,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_){
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
+	if (player) delete player, player = nullptr;
 	
 	for (GameObject* GameObject : walls) {
 		delete GameObject;
@@ -72,6 +74,25 @@ bool Scene0::OnCreate() {
 		xpos++;
 	}
 
+	//load player character
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	player = new PlayerCharacter();
+	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
+	player->setTexture(texturePtr);
+
 
 	return true;
 }
@@ -81,12 +102,12 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
-	
+	Physics::SimpleNewtonMotion(*player, time);
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 	//Make stuff happen here with the clickety clack
-	
+	player->HandleEvents(sdlEvent);
 }
 
 void Scene0::Render() {
@@ -118,7 +139,19 @@ void Scene0::Render() {
 		SDL_RenderCopy(renderer, walls[i]->getTexture(), nullptr, &WallRect);
 	}
 	
-	
+	//Draw player
+	SDL_Rect playerRect;
+	Vec3 playerScreenCoords;
+	int playerW, playerH;
+
+	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &playerW, &playerH);
+	playerScreenCoords = projectionMatrix * player->getPos();
+	playerRect.x = static_cast<int> (playerScreenCoords.x);
+	playerRect.y = static_cast<int> (playerScreenCoords.y);
+	playerRect.w = playerW * 2;
+	playerRect.h = playerH * 2;
+	SDL_RenderCopy(renderer, player->getTexture(), nullptr, &playerRect);
+
 	//Update screen
 	SDL_RenderPresent(renderer);
 

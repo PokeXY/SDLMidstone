@@ -8,7 +8,7 @@ class Character : public GameObject
 protected:
 	int health, maxHealth;
 	bool isVisible, isActive;
-	float moveSpeed;
+	float moveSpeed = 4.0f;
 
 public:
 	Character();

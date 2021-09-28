@@ -5,6 +5,7 @@
 #include <vector>
 #include "Scene.h"
 #include "GameObject.h"
+#include "PlayerCharacter.h"
 
 using namespace MATH;
 //Numbers of walls 
@@ -18,6 +19,7 @@ private:
 	SDL_Surface* surfacePtr;
 	SDL_Texture* texturePtr;
 	SDL_Texture* background;
+	PlayerCharacter* player;
 
 	std::vector<GameObject*> walls;
 
