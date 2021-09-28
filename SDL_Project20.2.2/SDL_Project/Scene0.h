@@ -1,10 +1,10 @@
 #ifndef SCENE0_H
 #define SCENE0_H
-#include "Body.h"
-#include "MMath.h"
-#include "Scene.h"
+
 #include <SDL.h>
-#include "Wall.h"
+#include <vector>
+#include "Scene.h"
+#include "GameObject.h"
 
 using namespace MATH;
 //Numbers of walls 
@@ -15,8 +15,11 @@ private:
 	SDL_Window *window;
 	Matrix4 projectionMatrix;
 	SDL_Renderer* renderer;
-	Body* backGround;
-	Wall* wall[NUMWALL];
+	SDL_Surface* surfacePtr;
+	SDL_Texture* texturePtr;
+	SDL_Texture* background;
+
+	std::vector<GameObject*> walls;
 
 	
 public:

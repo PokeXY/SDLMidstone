@@ -2,7 +2,6 @@
 #include "Window.h"
 #include "Timer.h"
 #include "Scene0.h"
-#include "Scene1.h"
 
 #include <iostream>
 
@@ -67,7 +66,7 @@ void GameManager::Run() {
 				case SDL_SCANCODE_ESCAPE:
 					isRunning = false;
 					break;
-				case SDL_SCANCODE_F1:
+				/*case SDL_SCANCODE_F1:
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene1(windowPtr->GetSDL_Window());
@@ -75,7 +74,7 @@ void GameManager::Run() {
 					break;
 
 					// If we need more scenes later I don't wanna rewrite this 
-				/*case SDL_SCANCODE_F2:
+				case SDL_SCANCODE_F2:
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene2(windowPtr->GetSDL_Window());

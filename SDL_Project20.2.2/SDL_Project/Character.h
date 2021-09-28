@@ -1,13 +1,14 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "Body.h"
+#include "GameObject.h"
 
-class Character : public Body
+class Character : public GameObject
 {
 protected:
 	int health, maxHealth;
 	bool isVisible, isActive;
+	float moveSpeed;
 
 public:
 	Character();
