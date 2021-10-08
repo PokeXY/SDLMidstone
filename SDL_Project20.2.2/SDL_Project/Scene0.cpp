@@ -2,26 +2,23 @@
 #include <SDL.h>
 #include "SDL_image.h"
 #include "Randomizer.h"
+#include "Physics.h"
 #include <iostream>
 
 
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1,SDL_RENDERER_ACCELERATED);
-	backGround = new Body(Vec3(0.0f,15.0f,0.0f ),Vec3(),Vec3(), 1.0f);
-	float xpos = 0.0;
-	for (int i = 0; i < NUMWALL; ++i) {
-		wall[i] = new Wall(Vec3(xpos, 15.0f, 0.0f));
-		xpos++;
-	}
-	
 }
 
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
-	for (int i = 0; i < NUMWALL; ++i) {
-		delete wall[i];
+	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
+	if (texturePtr) delete texturePtr, texturePtr = nullptr;
+	if (player) delete player, player = nullptr;
+	
+	for (GameObject* GameObject : walls) {
+		delete GameObject;
 	}
-	delete backGround;
 	SDL_DestroyRenderer(renderer);
 }
 
@@ -33,65 +30,84 @@ bool Scene0::OnCreate() {
 	SDL_GetWindowSize(window,&w,&h);
 	
 	Matrix4 ndc = MMath::viewportNDC(w, h);
-	Matrix4 ortho = MMath::orthographic(0.0, xAxis, 0.0, yAxis, 0.0, zAxis);
+	Matrix4 ortho = MMath::orthographic(0.0f, xAxis, 0.0f, yAxis, 0.0f, zAxis);
 	projectionMatrix = ndc * ortho;
 	
 
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
-	SDL_Surface* bgImage = IMG_Load("Art/bgSample.png");
-	SDL_Texture* bgTexture = SDL_CreateTextureFromSurface(renderer,bgImage);
-	if (bgTexture == nullptr) printf("%s\n", SDL_GetError());
-	if (bgImage == nullptr) {
+	surfacePtr = IMG_Load("Art/bgSample.png");
+	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	
+	if (surfacePtr == nullptr) {
 		std::cerr << "Imgage does not work" << std::endl;
+		return false;
 	}
-	else {
-		Vec3 wcfsc;
-		wcfsc.x = xAxis / static_cast<float>(w) * static_cast<float>(bgImage->w);
-		wcfsc.y = yAxis / static_cast<float>(h) * static_cast<float>(bgImage->h);
-		backGround->setTexture(bgTexture);
-		backGround->setImageSizeWorldCoords(wcfsc);
-		SDL_FreeSurface(bgImage);
-		
+	if (background == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
 	}
+
+	SDL_FreeSurface(surfacePtr);
+	
 
 	//Loads in the wall image and set the texture to the walls
-	SDL_Surface* wallImage = IMG_Load("Art/Wall02.png");
-	SDL_Texture* wallTexture = SDL_CreateTextureFromSurface(renderer, wallImage);
-	if (wallTexture == nullptr) printf("%s\n", SDL_GetError());
-	if (wallImage == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-	}
-	else {
-		Vec3 wallcfsc;
-		wallcfsc.x = xAxis / static_cast<float>(w) * static_cast<float>(wallImage->w);
-		wallcfsc.y = yAxis / static_cast<float>(h) * static_cast<float>(wallImage->h);
-		for (int i = 0; i < NUMWALL; i++) {
-			wall[i]->setTexture(wallTexture);
-			wall[i]->setImageSizeWorldCoords(wallcfsc);
-		}
-		SDL_FreeSurface(wallImage);
+	surfacePtr = IMG_Load("Art/Wall02.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
 	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	float xpos = 0.0;
+	for (int i = 0; i < NUMWALL; ++i) {
+		walls.push_back(new GameObject(texturePtr));
+		walls[i]->setPos(Vec3(xpos, 15.0f, 0.0f));
+		xpos++;
+	}
+
+	//load player character
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	player = new PlayerCharacter();
+	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
+	player->setTexture(texturePtr);
+
 
 	return true;
 }
 
 void Scene0::OnDestroy() {  
-
-	
-	SDL_DestroyRenderer(renderer);
 }
 
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
-	
+	Physics::SimpleNewtonMotion(*player, time);
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 	//Make stuff happen here with the clickety clack
-	
+	player->HandleEvents(sdlEvent);
 }
 
 void Scene0::Render() {
@@ -101,32 +117,41 @@ void Scene0::Render() {
 	SDL_RenderClear(renderer);
 	
 	//Draws the back ground
-	Vec3 bgScreenCoords;
 	SDL_Rect bg;
-	bgScreenCoords = projectionMatrix * backGround->getPos();
-	bg.x = static_cast<int> (bgScreenCoords.x);
-	bg.y = static_cast<int> (bgScreenCoords.y);
+	bg.x = 0;
+	bg.y = 0;
 	bg.w = 1280;
 	bg.h = 720;
-	SDL_RenderCopy(renderer, backGround->getTexture(), nullptr, &bg);
+	SDL_RenderCopy(renderer, background, nullptr, &bg);
 
 	//Draws all the walls
+	SDL_Rect WallRect;
 	Vec3 wallScreenCoords;
 	int WallW, WallH;
-	SDL_Rect WallRect;
+
 	for (int i = 0; i < NUMWALL; ++i) {
-		SDL_QueryTexture(wall[i]->getTexture(), nullptr, nullptr, &WallW, &WallH);
-		wallScreenCoords = projectionMatrix * wall[i]->getPos();
+		SDL_QueryTexture(walls[i]->getTexture(), nullptr, nullptr, &WallW, &WallH);
+		wallScreenCoords = projectionMatrix * walls[i]->getPos();
 		WallRect.x = static_cast<int> (wallScreenCoords.x);
 		WallRect.y = static_cast<int> (wallScreenCoords.y);
 		WallRect.w = WallW*2;
 		WallRect.h = WallH*2;
-		SDL_RenderCopy(renderer, wall[i]->getTexture(), nullptr, &WallRect);
-
-
+		SDL_RenderCopy(renderer, walls[i]->getTexture(), nullptr, &WallRect);
 	}
 	
-	
+	//Draw player
+	SDL_Rect playerRect;
+	Vec3 playerScreenCoords;
+	int playerW, playerH;
+
+	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &playerW, &playerH);
+	playerScreenCoords = projectionMatrix * player->getPos();
+	playerRect.x = static_cast<int> (playerScreenCoords.x);
+	playerRect.y = static_cast<int> (playerScreenCoords.y);
+	playerRect.w = playerW * 2;
+	playerRect.h = playerH * 2;
+	SDL_RenderCopy(renderer, player->getTexture(), nullptr, &playerRect);
+
 	//Update screen
 	SDL_RenderPresent(renderer);
 
