@@ -9,7 +9,7 @@
 
 using namespace MATH;
 //Numbers of walls 
-#define NUMWALL 30
+#define NUMWALL 16
 
 class Scene0 : public Scene {
 private:

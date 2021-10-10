@@ -24,8 +24,8 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 
 bool Scene0::OnCreate() {
 	int w, h;
-	float xAxis = 30.0f;
-	float yAxis = 15.0f;
+	float xAxis = 32.0f;
+	float yAxis = 18.0f;
 	float zAxis = 1.0f;
 	SDL_GetWindowSize(window,&w,&h);
 	
@@ -70,8 +70,8 @@ bool Scene0::OnCreate() {
 	float xpos = 0.0;
 	for (int i = 0; i < NUMWALL; ++i) {
 		walls.push_back(new GameObject(texturePtr));
-		walls[i]->setPos(Vec3(xpos, 15.0f, 0.0f));
-		xpos++;
+		walls[i]->setPos(Vec3(xpos, 18.0f, 0.0f));
+		xpos +=2;
 	}
 
 	//load player character
@@ -134,8 +134,8 @@ void Scene0::Render() {
 		wallScreenCoords = projectionMatrix * walls[i]->getPos();
 		WallRect.x = static_cast<int> (wallScreenCoords.x);
 		WallRect.y = static_cast<int> (wallScreenCoords.y);
-		WallRect.w = WallW*2;
-		WallRect.h = WallH*2;
+		WallRect.w = 80;
+		WallRect.h = 80;
 		SDL_RenderCopy(renderer, walls[i]->getTexture(), nullptr, &WallRect);
 	}
 	
