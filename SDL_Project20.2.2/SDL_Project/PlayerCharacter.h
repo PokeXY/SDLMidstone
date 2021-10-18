@@ -18,7 +18,7 @@ public:
 	PlayerCharacter();
 	~PlayerCharacter();
 
-	void HandleEvents(const SDL_Event& sdlEvent);
+	void HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix);
 
 	const bool getMouseDown() const { return mouseDown; }
 	const Vec3 getLookDirection() const { return lookDirection; }

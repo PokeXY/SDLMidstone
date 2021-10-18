@@ -11,13 +11,20 @@ PlayerCharacter::~PlayerCharacter()
 
 void PlayerCharacter::LookDirection(float x, float y) {
 	lookDirection = Vec3(x, y, 0.0f);
+
+	if (x > pos.x) {
+		angle = -atan((y - pos.y) / (x - pos.x)) * 180 / M_PI;
+	}
+	else {
+		angle = 180 - atan((y - pos.y) / (x - pos.x)) * 180 / M_PI;
+	}
 }
 
 void PlayerCharacter::FireWeapon() {
 	//launch bullet and stuff
 }
 
-void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent) {
+void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
 	if (sdlEvent.type == SDL_KEYDOWN) {
 
 		switch (sdlEvent.key.keysym.scancode) {
@@ -48,7 +55,9 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent) {
 	}
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEMOTION) {
-		LookDirection(sdlEvent.button.x, sdlEvent.button.y);
+		Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);
+		Vec3 mousePosWorld = MMath::inverse(projectionMatrix) * mousePosView;
+		LookDirection(mousePosWorld.x, mousePosWorld.y);
 	}
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {

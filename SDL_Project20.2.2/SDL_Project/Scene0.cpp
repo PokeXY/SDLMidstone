@@ -107,7 +107,7 @@ void Scene0::Update(const float time) {
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 	//Make stuff happen here with the clickety clack
-	player->HandleEvents(sdlEvent);
+	player->HandleEvents(sdlEvent, projectionMatrix);
 }
 
 void Scene0::Render() {
@@ -146,12 +146,13 @@ void Scene0::Render() {
 
 	SDL_QueryTexture(player->getTexture(), nullptr, nullptr, &playerW, &playerH);
 	playerScreenCoords = projectionMatrix * player->getPos();
-	playerRect.x = static_cast<int> (playerScreenCoords.x);
-	playerRect.y = static_cast<int> (playerScreenCoords.y);
+	playerRect.x = static_cast<int>(playerScreenCoords.x) - playerW;
+	playerRect.y = static_cast<int>(playerScreenCoords.y) - playerH;
 	playerRect.w = playerW * 2;
 	playerRect.h = playerH * 2;
-	SDL_RenderCopy(renderer, player->getTexture(), nullptr, &playerRect);
 
+	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
+	
 	//Update screen
 	SDL_RenderPresent(renderer);
 

@@ -32,6 +32,8 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event &sdlEvent );
+
+	Matrix4 getProjectionMatrix() { return projectionMatrix; }
 };
 
 #endif
