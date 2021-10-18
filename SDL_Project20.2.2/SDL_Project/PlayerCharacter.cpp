@@ -20,8 +20,19 @@ void PlayerCharacter::LookDirection(float x, float y) {
 	}
 }
 
-void PlayerCharacter::FireWeapon() {
-	//launch bullet and stuff
+Bullet PlayerCharacter::FireWeapon() {
+	Bullet bullet;
+	//weaponType 0 is standard weapon, can add other types
+	if (weaponType == 0) {	
+		float velx = 10.0f * cos(angle * M_PI / 180);
+		float vely = -10.0f * sin(angle * M_PI / 180);
+
+		bullet.setPos(pos);
+		bullet.setVel(Vec3(velx, vely, 0.0f));
+		bullet.setRemainingBounces(3);
+	}
+	
+	return bullet;
 }
 
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
@@ -58,9 +69,5 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 		Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);
 		Vec3 mousePosWorld = MMath::inverse(projectionMatrix) * mousePosView;
 		LookDirection(mousePosWorld.x, mousePosWorld.y);
-	}
-
-	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {
-		FireWeapon();
 	}
 }

@@ -19,6 +19,9 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	for (GameObject* GameObject : walls) {
 		delete GameObject;
 	}
+	for (GameObject* GameObject : bullets) {
+		delete GameObject;
+	}
 	SDL_DestroyRenderer(renderer);
 }
 
@@ -40,6 +43,22 @@ bool Scene0::OnCreate() {
 	surfacePtr = IMG_Load("Art/bgSample.png");
 	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 	
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (background == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+
+	//Load the crouton image and set the texture as well
+	surfacePtr = IMG_Load("Art/placeholderCrouton.png");
+	croutonTexture = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
 	if (surfacePtr == nullptr) {
 		std::cerr << "Imgage does not work" << std::endl;
 		return false;
@@ -103,11 +122,22 @@ void Scene0::OnDestroy() {
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
 	Physics::SimpleNewtonMotion(*player, time);
+
+	for (int i = 0; i < bullets.size(); ++i) {
+		Physics::SimpleNewtonMotion(*bullets[i], time);
+	}
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 	//Make stuff happen here with the clickety clack
 	player->HandleEvents(sdlEvent, projectionMatrix);
+
+	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {
+		Bullet bullet = player->FireWeapon();
+		bullets.push_back(new Bullet(bullet));
+		int newBullet = bullets.size() - 1;
+		bullets[newBullet]->setTexture(croutonTexture);
+	}
 }
 
 void Scene0::Render() {
@@ -150,8 +180,23 @@ void Scene0::Render() {
 	playerRect.y = static_cast<int>(playerScreenCoords.y) - playerH;
 	playerRect.w = playerW * 2;
 	playerRect.h = playerH * 2;
-
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
+
+	//Draw Bullets
+	SDL_Rect bulletRect;
+	Vec3 bulletScreenCoords;
+	int bulletW, bulletH;
+
+	for (int i = 0; i < bullets.size(); ++i) {
+		bulletScreenCoords = projectionMatrix * bullets[i]->getPos();
+		SDL_QueryTexture(bullets[i]->getTexture(), nullptr, nullptr, &bulletW, &bulletH);
+		bulletRect.x = static_cast<int>(bulletScreenCoords.x - bulletW / 20);
+		bulletRect.y = static_cast<int>(bulletScreenCoords.y - bulletH / 20);
+		bulletRect.w = bulletW / 10;
+		bulletRect.h = bulletH / 10;
+
+		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
+	}
 	
 	//Update screen
 	SDL_RenderPresent(renderer);

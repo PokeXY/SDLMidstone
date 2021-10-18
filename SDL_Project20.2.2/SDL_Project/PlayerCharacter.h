@@ -2,6 +2,7 @@
 #define PLAYERCHARACTER_H
 
 #include "Character.h"
+#include "Bullet.h"
 
 class PlayerCharacter : public Character
 {
@@ -12,12 +13,12 @@ private:
 	int weaponType;
 
 	void LookDirection(float x, float y);
-	void FireWeapon();
 
 public:
 	PlayerCharacter();
 	~PlayerCharacter();
 
+	Bullet FireWeapon();
 	void HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix);
 
 	const bool getMouseDown() const { return mouseDown; }

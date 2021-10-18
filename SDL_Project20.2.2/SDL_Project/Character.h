@@ -13,6 +13,9 @@ protected:
 public:
 	Character();
 	~Character();
+
+	void takeDamage(float damageAmount_);
+	bool restoreHealth(float healingAmount_);
 };
 
 #endif
