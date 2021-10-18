@@ -7,8 +7,11 @@
 #include "GameObject.h"
 #include "PlayerCharacter.h"
 #include "Bullet.h"
+#include "Plane.h"
 
 using namespace MATH;
+struct MATH::Plane;
+
 //Numbers of walls 
 #define NUMWALL 16
 
@@ -26,7 +29,11 @@ private:
 	std::vector<GameObject*> walls;
 	std::vector<Bullet*> bullets;
 
-	
+	Plane* wallLeft; 
+	Plane* wallRight; 
+	Plane* wallTop; 
+	Plane* wallBottom;
+
 public:
 	Scene0(SDL_Window* sdlWindow);
 	~Scene0();

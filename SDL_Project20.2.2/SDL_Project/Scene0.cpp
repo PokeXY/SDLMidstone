@@ -14,14 +14,21 @@ Scene0::Scene0(SDL_Window* sdlWindow_){
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
+	if (background) delete background, background = nullptr;
+	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
 	if (player) delete player, player = nullptr;
 	
 	for (GameObject* GameObject : walls) {
 		delete GameObject;
 	}
-	for (GameObject* GameObject : bullets) {
-		delete GameObject;
+	for (Bullet* Bullet : bullets) {
+		delete Bullet;
 	}
+	if (wallLeft) delete wallLeft, wallLeft = nullptr;
+	if (wallRight) delete wallRight, wallRight = nullptr;
+	if (wallTop) delete wallTop, wallTop = nullptr;
+	if (wallBottom) delete wallBottom, wallBottom = nullptr;
+
 	SDL_DestroyRenderer(renderer);
 }
 
@@ -35,8 +42,12 @@ bool Scene0::OnCreate() {
 	Matrix4 ndc = MMath::viewportNDC(w, h);
 	Matrix4 ortho = MMath::orthographic(0.0f, xAxis, 0.0f, yAxis, 0.0f, zAxis);
 	projectionMatrix = ndc * ortho;
-	
 
+	//temporary border walls
+	wallLeft = new Plane(Vec3(1.0f, 0.0f, 0.0f), 0.0f);
+	wallRight = new Plane(Vec3(-1.0f, 0.0f, 0.0f), xAxis);
+	wallTop = new Plane(Vec3(0.0f, -1.0f, 0.0f), yAxis);
+	wallBottom = new Plane(Vec3(0.0f, 1.0f, 0.0f), 0.0f);
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
@@ -110,6 +121,7 @@ bool Scene0::OnCreate() {
 
 	player = new PlayerCharacter();
 	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
+	player->setBoundingSphere(Sphere(2.0f));
 	player->setTexture(texturePtr);
 
 
@@ -121,10 +133,47 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
-	Physics::SimpleNewtonMotion(*player, time);
 
+	//Player Movement
+	Physics::SimpleNewtonMotion(*player, time);
+	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
+	}
+	//Bullet Border Wall Collisions
+	for (int i = 0; i < bullets.size(); ++i) {
+		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
+			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
+			bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+			if (bullets[i]->getRemainingBounces() < 0) {
+				bullets.erase(bullets.begin()+i);
+				break;
+			}
+		}
+		if (Physics::PlaneSphereCollision(*bullets[i], *wallRight) == true) {
+			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallRight);
+			bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+			if (bullets[i]->getRemainingBounces() < 0) {
+				bullets.erase(bullets.begin() + i);
+				break;
+			}
+		}
+		if (Physics::PlaneSphereCollision(*bullets[i], *wallTop) == true) {
+			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallTop);
+			bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+			if (bullets[i]->getRemainingBounces() < 0) {
+				bullets.erase(bullets.begin() + i);
+				break;
+			}
+		}
+		if (Physics::PlaneSphereCollision(*bullets[i], *wallBottom) == true) {
+			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallBottom);
+			bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+			if (bullets[i]->getRemainingBounces() < 0) {
+				bullets.erase(bullets.begin() + i);
+				break;
+			}
+		}
 	}
 }
 
