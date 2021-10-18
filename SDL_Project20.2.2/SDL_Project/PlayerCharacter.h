@@ -19,6 +19,7 @@ public:
 	~PlayerCharacter();
 
 	Bullet FireWeapon();
+	bool restoreHealth(float healingAmount_);
 	void HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix);
 
 	const bool getMouseDown() const { return mouseDown; }

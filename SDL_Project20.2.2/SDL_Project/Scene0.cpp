@@ -186,6 +186,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 		bullets.push_back(new Bullet(bullet));
 		int newBullet = bullets.size() - 1;
 		bullets[newBullet]->setTexture(croutonTexture);
+		bullets[newBullet]->setBoundingSphere(Sphere(1.0f));
 	}
 }
 

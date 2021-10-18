@@ -35,6 +35,22 @@ Bullet PlayerCharacter::FireWeapon() {
 	return bullet;
 }
 
+bool PlayerCharacter::restoreHealth(float healingAmount_) {
+	bool destroyHealthPickup;	//if player full on health, keep health pickup on ground
+	if (health == maxHealth) {
+		destroyHealthPickup = false;
+	}
+	else {
+		health += healingAmount_;
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
+		destroyHealthPickup = true;
+	}
+
+	return destroyHealthPickup;
+}
+
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
 	if (sdlEvent.type == SDL_KEYDOWN) {
 
