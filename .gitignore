@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/SDL_Project20.2.2/SDL_Project/Debug
+/SDL_Project20.2.2/SDL_Project/.vs/SDL_Project/v16
