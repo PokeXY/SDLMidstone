@@ -121,7 +121,7 @@ bool Scene0::OnCreate() {
 
 	player = new PlayerCharacter();
 	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
-	player->setBoundingSphere(Sphere(2.0f));
+	player->setBoundingSphere(Sphere(1.0f));
 	player->setTexture(texturePtr);
 
 
@@ -137,7 +137,7 @@ void Scene0::Update(const float time) {
 	
 
 	//test ethan player collide wall
-	std::cout << "x" << player->getPos().x << std::endl;
+	/*std::cout << "x" << player->getPos().x << std::endl;
 	if (player->getPos().x  < 1)// wallLeft
 	{
 		printf("touch wallLeft");	
@@ -158,10 +158,25 @@ void Scene0::Update(const float time) {
 	{
 		printf("touch wallBottom");
 		player->setPos(Vec3(player->getPos().x, 1.0f, player->getPos().z));
+	}*/
+
+    //Player Movement
+	Physics::SimpleNewtonMotion(*player, time);
+
+	//alternate player hits walls
+	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
+		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
+	}
+	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) {
+		player->setPos(Vec3(-wallRight->d - player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
+	}
+	if (Physics::PlaneSphereCollision(*player, *wallTop) == true) {
+		player->setPos(Vec3(player->getPos().x, -wallTop->d - player->getBoundingSphere().r, player->getPos().z));
+	}
+	if (Physics::PlaneSphereCollision(*player, *wallBottom) == true) {
+		player->setPos(Vec3(player->getPos().x, player->getBoundingSphere().r, player->getPos().z));
 	}
 
-//Player Movement
-	Physics::SimpleNewtonMotion(*player, time);
 	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
