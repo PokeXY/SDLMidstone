@@ -181,6 +181,15 @@ void Scene0::Update(const float time) {
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
 	}
+
+	//Bullet Hits Player
+	for (int i = 0; i < bullets.size(); ++i) {
+		if (Physics::SphereSphereCollision(*bullets[i], *player) == true) {
+				bullets.erase(bullets.begin() + i);
+				player->takeDamage(1.0f);
+		}
+	}
+	
 	//Bullet Border Wall Collisions
 	for (int i = 0; i < bullets.size(); ++i) {
 		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
@@ -227,7 +236,6 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
 		bullets.push_back(new Bullet(bullet));
 		int newBullet = bullets.size() - 1;
 		bullets[newBullet]->setTexture(croutonTexture);
-		bullets[newBullet]->setBoundingSphere(Sphere(1.0f));
 	}
 }
 

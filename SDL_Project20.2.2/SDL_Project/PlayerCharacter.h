@@ -13,6 +13,7 @@ private:
 	int weaponType;
 
 	void LookDirection(float x, float y);
+	void dead();
 
 public:
 	PlayerCharacter();

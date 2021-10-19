@@ -10,11 +10,13 @@ protected:
 	bool isVisible, isActive;
 	float moveSpeed = 4.0f;
 
+	virtual void dead();
+
 public:
 	Character();
 	~Character();
 
-	bool takeDamage(float damageAmount_);
+	void takeDamage(float damageAmount_);
 };
 
 #endif

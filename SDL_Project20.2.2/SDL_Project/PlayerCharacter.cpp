@@ -27,8 +27,14 @@ Bullet PlayerCharacter::FireWeapon() {
 		float velx = 10.0f * cos(angle * M_PI / 180);
 		float vely = -10.0f * sin(angle * M_PI / 180);
 
-		bullet.setPos(pos);
+		bullet.setBoundingSphere(Sphere(1.0f));
+
+		float offsetx = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * cos(angle * M_PI / 180);
+		float offsety = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * sin(angle * M_PI / 180);
+
+		bullet.setPos(Vec3(pos.x + offsetx, pos.y - offsety, 0.0f));
 		bullet.setVel(Vec3(velx, vely, 0.0f));
+		
 		bullet.setRemainingBounces(3);
 	}
 	
@@ -50,6 +56,10 @@ bool PlayerCharacter::restoreHealth(float healingAmount_) {
 
 	return destroyHealthPickup;
 }
+
+void PlayerCharacter::dead() {
+	printf("You Died\n");
+};
 
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
 	if (sdlEvent.type == SDL_KEYDOWN) {
