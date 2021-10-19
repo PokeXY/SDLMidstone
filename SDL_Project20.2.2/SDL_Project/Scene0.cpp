@@ -134,7 +134,33 @@ void Scene0::OnDestroy() {
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
 
-	//Player Movement
+	
+
+	//test ethan player collide wall
+	std::cout << "x" << player->getPos().x << std::endl;
+	if (player->getPos().x  < 1)// wallLeft
+	{
+		printf("touch wallLeft");	
+		player->setPos(Vec3(1.0f, player->getPos().y, player->getPos().z ));
+	}
+	if (player->getPos().x > 31)// wallRight
+	{
+		printf("touch wallRight");
+		player->setPos(Vec3(31.0f, player->getPos().y, player->getPos().z));
+	}
+	std::cout << "y" << player->getPos().y << std::endl;
+	if (player->getPos().y > 17)// wallTop
+	{
+		printf("touch wallTop");
+		player->setPos(Vec3(player->getPos().x, 17.0f, player->getPos().z));
+	}
+	if (player->getPos().y < 1)// wallBottom
+	{
+		printf("touch wallBottom");
+		player->setPos(Vec3(player->getPos().x, 1.0f, player->getPos().z));
+	}
+
+//Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
 	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
