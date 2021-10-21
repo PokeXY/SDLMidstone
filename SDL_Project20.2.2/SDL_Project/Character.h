@@ -17,6 +17,8 @@ public:
 	~Character();
 
 	void takeDamage(float damageAmount_);
+
+	int getHealth() { return health; }
 };
 
 #endif

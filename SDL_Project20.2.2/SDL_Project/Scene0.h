@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "PlayerCharacter.h"
+#include "EnemyCharacter.h"
 #include "Bullet.h"
 #include "Plane.h"
 
@@ -28,6 +29,7 @@ private:
 
 	std::vector<GameObject*> walls;
 	std::vector<Bullet*> bullets;
+	std::vector<EnemyCharacter*> enemies;
 
 	Plane* wallLeft; 
 	Plane* wallRight; 

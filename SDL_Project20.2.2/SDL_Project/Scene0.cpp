@@ -5,7 +5,6 @@
 #include "Physics.h"
 #include <iostream>
 
-
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1,SDL_RENDERER_ACCELERATED);
@@ -23,6 +22,9 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	}
 	for (Bullet* Bullet : bullets) {
 		delete Bullet;
+	}
+	for (EnemyCharacter* EnemyCharacter : enemies) {
+		delete EnemyCharacter;
 	}
 	if (wallLeft) delete wallLeft, wallLeft = nullptr;
 	if (wallRight) delete wallRight, wallRight = nullptr;
@@ -124,6 +126,27 @@ bool Scene0::OnCreate() {
 	player->setBoundingSphere(Sphere(1.0f));
 	player->setTexture(texturePtr);
 
+	//load enemy characters
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	for (int i = 0; i < 4; ++i) {
+		enemies.push_back(new EnemyCharacter());
+		enemies[i]->setPos(Vec3(xAxis - 2.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setBoundingSphere(Sphere(0.5f));
+		enemies[i]->setTexture(texturePtr);
+	}
 
 	return true;
 }
@@ -134,36 +157,16 @@ void Scene0::OnDestroy() {
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
 
-	
-
-	//test ethan player collide wall
-	/*std::cout << "x" << player->getPos().x << std::endl;
-	if (player->getPos().x  < 1)// wallLeft
-	{
-		printf("touch wallLeft");	
-		player->setPos(Vec3(1.0f, player->getPos().y, player->getPos().z ));
-	}
-	if (player->getPos().x > 31)// wallRight
-	{
-		printf("touch wallRight");
-		player->setPos(Vec3(31.0f, player->getPos().y, player->getPos().z));
-	}
-	std::cout << "y" << player->getPos().y << std::endl;
-	if (player->getPos().y > 17)// wallTop
-	{
-		printf("touch wallTop");
-		player->setPos(Vec3(player->getPos().x, 17.0f, player->getPos().z));
-	}
-	if (player->getPos().y < 1)// wallBottom
-	{
-		printf("touch wallBottom");
-		player->setPos(Vec3(player->getPos().x, 1.0f, player->getPos().z));
-	}*/
-
     //Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
 
-	//alternate player hits walls
+	//Enemy Movement
+	for (int i = 0; i < enemies.size(); ++i) {
+		enemies[i]->seekPlayer(player->getPos());
+		Physics::SimpleNewtonMotion(*enemies[i], time);
+	}
+
+	//Player Hits Wall
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
@@ -182,11 +185,36 @@ void Scene0::Update(const float time) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
 	}
 
+	//Bullet Hits Enemy
+	for (int i = 0; i < bullets.size(); ++i) {
+		for (int j = 0; j < enemies.size(); ++j) {
+			if (Physics::SphereSphereCollision(*bullets[i], *enemies[j]) == true) {
+				bullets.erase(bullets.begin() + i);
+				enemies[j]->takeDamage(1.0f);
+				if (enemies[j]->getHealth() <= 0) {
+					enemies.erase(enemies.begin() + j);
+				}
+				break;
+			}
+		}
+	}
+
 	//Bullet Hits Player
 	for (int i = 0; i < bullets.size(); ++i) {
 		if (Physics::SphereSphereCollision(*bullets[i], *player) == true) {
 				bullets.erase(bullets.begin() + i);
 				player->takeDamage(1.0f);
+		}
+	}
+
+	//TODO : Enemy Hits Enemy
+	//Prevent overlapping
+
+	//Enemy Hits Player
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (Physics::SphereSphereCollision(*enemies[i], *player) == true) {
+			player->takeDamage(1.0f);
+			enemies.erase(enemies.begin() + i);
 		}
 	}
 	
@@ -266,6 +294,22 @@ void Scene0::Render() {
 		WallRect.w = 80;
 		WallRect.h = 80;
 		SDL_RenderCopy(renderer, walls[i]->getTexture(), nullptr, &WallRect);
+	}
+
+	//Draw Enemies
+	SDL_Rect enemyRect;
+	Vec3 enemyScreenCoords;
+	int enemyW, enemyH;
+
+	for (int i = 0; i < enemies.size(); ++i) {
+		enemyScreenCoords = projectionMatrix * enemies[i]->getPos();
+		SDL_QueryTexture(enemies[i]->getTexture(), nullptr, nullptr, &enemyW, &enemyH);
+		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);
+		enemyRect.y = static_cast<int>(enemyScreenCoords.y - enemyH / 2);
+		enemyRect.w = enemyW;
+		enemyRect.h = enemyH;
+
+		SDL_RenderCopy(renderer, enemies[i]->getTexture(), nullptr, &enemyRect);
 	}
 	
 	//Draw player
