@@ -5,6 +5,7 @@
 #include <vector>
 #include "Scene.h"
 #include "GameObject.h"
+#include "SDL_mixer.h"
 #include "PlayerCharacter.h"
 #include "EnemyCharacter.h"
 #include "Bullet.h"
@@ -26,6 +27,7 @@ private:
 	SDL_Texture* background;
 	SDL_Texture* croutonTexture;
 	PlayerCharacter* player;
+	Mix_Music* backGroundMusic;
 
 	std::vector<GameObject*> walls;
 	std::vector<Bullet*> bullets;

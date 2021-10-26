@@ -14,6 +14,7 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
 	if (background) delete background, background = nullptr;
+	if (backGroundMusic) delete backGroundMusic, backGroundMusic = nullptr;
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
 	if (player) delete player, player = nullptr;
 	
@@ -66,6 +67,17 @@ bool Scene0::OnCreate() {
 	}
 
 	SDL_FreeSurface(surfacePtr);
+
+	//Music Zone Start
+	if (SDL_Init(SDL_INIT_AUDIO) < 0)
+	{
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+		return false;
+	}
+
+	/*Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	backGroundMusic = Mix_LoadMUS("Music/BgMusic01.wav");
+	Mix_PlayMusic(backGroundMusic, -1);*/
 
 
 	//Load the crouton image and set the texture as well

@@ -4,4 +4,7 @@
     <LocalDebuggerEnvironment>PATH=%PATH%;C:\GameDev\OpenGL\dll;C:\GameDev\SDL\dll;</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <PropertyGroup>
+    <ShowAllFiles>false</ShowAllFiles>
+  </PropertyGroup>
 </Project>
