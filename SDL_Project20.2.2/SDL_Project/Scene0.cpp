@@ -17,9 +17,13 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
 	if (player) delete player, player = nullptr;
 	
-	for (GameObject* GameObject : walls) {
-		delete GameObject;
+	for (int i = 0; i > NUMWALL; i++) {
+		if (walls[i]) delete walls[i], walls[i] = nullptr;
 	}
+
+	/*for (Wall* Wall : walls) {
+		delete Wall;
+	}*/
 	for (Bullet* Bullet : bullets) {
 		delete Bullet;
 	}
@@ -101,8 +105,9 @@ bool Scene0::OnCreate() {
 
 	float xpos = 0.0;
 	for (int i = 0; i < NUMWALL; ++i) {
-		walls.push_back(new GameObject(texturePtr));
+		walls[i] = new Wall();
 		walls[i]->setPos(Vec3(xpos, 18.0f, 0.0f));
+		walls[i]->setTexture(texturePtr);
 		xpos +=2;
 	}
 
@@ -159,6 +164,8 @@ void Scene0::Update(const float time) {
 
     //Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
+	
+
 
 	//Enemy Movement
 	for (int i = 0; i < enemies.size(); ++i) {
@@ -253,6 +260,25 @@ void Scene0::Update(const float time) {
 			}
 		}
 	}
+
+
+
+	//Bullet hit walls collison
+	/*for (int i = 0; i < NUMWALL; ++i) {
+		for (int i = 0; i < bullets.size(); ++i) {
+			if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
+				Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
+				bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+				if (bullets[i]->getRemainingBounces() < 0) {
+					bullets.erase(bullets.begin() + i);
+					break;
+				}
+			}
+
+
+
+		}
+	}*/
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) {

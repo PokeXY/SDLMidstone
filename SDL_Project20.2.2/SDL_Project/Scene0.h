@@ -9,6 +9,7 @@
 #include "EnemyCharacter.h"
 #include "Bullet.h"
 #include "Plane.h"
+#include "Wall.h"
 
 using namespace MATH;
 struct MATH::Plane;
@@ -27,7 +28,9 @@ private:
 	SDL_Texture* croutonTexture;
 	PlayerCharacter* player;
 
-	std::vector<GameObject*> walls;
+	Wall* walls[NUMWALL];
+
+	//std::vector<Wall*> walls;
 	std::vector<Bullet*> bullets;
 	std::vector<EnemyCharacter*> enemies;
 
