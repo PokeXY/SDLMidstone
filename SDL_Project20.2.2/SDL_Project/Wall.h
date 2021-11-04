@@ -17,6 +17,7 @@ public:
 	Wall(Plane LeftPlane_, Plane RightPlane_, Plane UpPlane_, Plane DownPlane_);
 	~Wall();
 
+
 	Plane GetLeft() { return LeftPlane; }
 	Plane GetRight() { return RightPlane; }
 	Plane GetUp() { return UpPlane; }

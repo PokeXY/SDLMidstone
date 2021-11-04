@@ -16,10 +16,8 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	if (background) delete background, background = nullptr;
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
 	if (player) delete player, player = nullptr;
+	if (level) delete level, level = nullptr;
 	
-	for (int i = 0; i > NUMWALL; i++) {
-		if (walls[i]) delete walls[i], walls[i] = nullptr;
-	}
 
 	/*for (Wall* Wall : walls) {
 		delete Wall;
@@ -103,13 +101,10 @@ bool Scene0::OnCreate() {
 
 	SDL_FreeSurface(surfacePtr);
 
-	float xpos = 0.0;
-	for (int i = 0; i < NUMWALL; ++i) {
-		walls[i] = new Wall();
-		walls[i]->setPos(Vec3(xpos, 18.0f, 0.0f));
-		walls[i]->setTexture(texturePtr);
-		xpos +=2;
-	}
+	//Making the level
+	level = new Level(NUMWALL);
+	level->makeLevel(0); // It breaks here why????
+	level->setWallTextures(texturePtr);
 
 	//load player character
 	surfacePtr = IMG_Load("Art/flappybird1.png");
@@ -313,13 +308,13 @@ void Scene0::Render() {
 	int WallW, WallH;
 
 	for (int i = 0; i < NUMWALL; ++i) {
-		SDL_QueryTexture(walls[i]->getTexture(), nullptr, nullptr, &WallW, &WallH);
-		wallScreenCoords = projectionMatrix * walls[i]->getPos();
+		SDL_QueryTexture(level->getWall(i)->getTexture(), nullptr, nullptr, &WallW, &WallH);
+		wallScreenCoords = projectionMatrix * level->getWall(i)->getPos();
 		WallRect.x = static_cast<int> (wallScreenCoords.x);
 		WallRect.y = static_cast<int> (wallScreenCoords.y);
 		WallRect.w = 80;
 		WallRect.h = 80;
-		SDL_RenderCopy(renderer, walls[i]->getTexture(), nullptr, &WallRect);
+		SDL_RenderCopy(renderer, level->getWall(i)->getTexture(), nullptr, &WallRect);
 	}
 
 	//Draw Enemies

@@ -9,13 +9,13 @@
 #include "EnemyCharacter.h"
 #include "Bullet.h"
 #include "Plane.h"
-#include "Wall.h"
+#include "Level.h"
 
 using namespace MATH;
 struct MATH::Plane;
 
 //Numbers of walls 
-#define NUMWALL 16
+#define NUMWALL 57
 
 class Scene0 : public Scene {
 private:
@@ -28,7 +28,7 @@ private:
 	SDL_Texture* croutonTexture;
 	PlayerCharacter* player;
 
-	Wall* walls[NUMWALL];
+	Level* level;
 
 	//std::vector<Wall*> walls;
 	std::vector<Bullet*> bullets;

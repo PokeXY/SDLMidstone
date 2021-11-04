@@ -18,3 +18,5 @@ Wall::Wall(Plane LeftPlane_, Plane RightPlane_, Plane UpPlane_, Plane DownPlane_
 }
 
 Wall::~Wall(){ }
+
+
