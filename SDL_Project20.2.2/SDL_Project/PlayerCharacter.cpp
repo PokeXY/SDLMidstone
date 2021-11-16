@@ -63,6 +63,45 @@ void PlayerCharacter::dead() {
 
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
 	if (sdlEvent.type == SDL_KEYDOWN) {
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
+			vel.y = moveSpeed;
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
+			vel.x = -moveSpeed;
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
+			vel.y = -moveSpeed;
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
+			vel.x = moveSpeed;
+		}
+	}
+
+	if (sdlEvent.type == SDL_KEYUP) {
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
+			if (vel.y > 0.0f) {
+				vel.y = 0.0f;
+			}
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
+			if (vel.x < 0.0f) {
+				vel.x = 0.0f;
+			}
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
+			if (vel.y < 0.0f) {
+				vel.y = 0.0f;
+			}
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
+			if (vel.x > 0.0f) {
+				vel.x = 0.0f;
+			}
+		}
+	}
+
+	/*
+	if (sdlEvent.type == SDL_KEYDOWN) {
 
 		switch (sdlEvent.key.keysym.scancode) {
 
@@ -91,11 +130,9 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 		}
 	}
 
-	/*if (sdlEvent.type == SDL_KEYUP) {
+	if (sdlEvent.type == SDL_KEYUP) {
 		vel = Vec3(0.0f);
 	}*/
-
-
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEMOTION) {
 		Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);
