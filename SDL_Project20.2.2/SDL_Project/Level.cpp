@@ -1,4 +1,5 @@
 #include "Level.h"
+//#include "Physics.h"
 
 
 Level::Level(int wallNum_) {
@@ -14,7 +15,6 @@ Level::Level(int wallNum_) {
 }
 
 Level::~Level() {
-	
 	for (int i = 0; i < wallNum; i++) {
 		delete walls[i];
 	}
@@ -36,6 +36,21 @@ void Level::makeLevel(int sceneNum) {
 		for (int i = 0; i < 16; ++i) { //Top line of walls 16 wall needed
 			walls[i]->setPos(Vec3(xpos1, 18.0f, 0.0f));
 			xpos1 += 2;
+
+
+			/*
+			don't know if to have the the these code in here or put the level.h in the scene0.cpp
+			this is the only code i could think of gettingt the sphere hitting the sorrounding wall
+			for (int i = 0; i < bullets.size(); ++i) {
+		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
+			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
+			bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+			if (bullets[i]->getRemainingBounces() < 0) {
+				bullets.erase(bullets.begin()+i);
+				break;
+			}
+		}
+			*/
 		}
 		
 		for (int i = 16; i < 24; ++i) { //Left line of walls 8 walls needed
