@@ -14,6 +14,7 @@ Level::Level(int wallNum_) {
 }
 
 Level::~Level() {
+	
 	for (int i = 0; i < wallNum; i++) {
 		delete walls[i];
 	}

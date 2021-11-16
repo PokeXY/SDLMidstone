@@ -81,7 +81,7 @@ bool Scene0::OnCreate() {
 
 	//Making the level
 	level = new Level(NUMWALL);
-	level->makeLevel(0); // It breaks here why????
+	level->makeLevel(0); 
 	level->setWallTextures(texturePtr);
 
 	//load player character
@@ -130,12 +130,11 @@ bool Scene0::OnCreate() {
 }
 
 void Scene0::OnDestroy() {  
-	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
+	/*if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
 	if (background) delete background, background = nullptr;
-	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
+	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;*/
 	if (player) delete player, player = nullptr;
-	level->~Level();
 	if (level) delete level, level = nullptr;
 
 
@@ -261,25 +260,25 @@ void Scene0::Update(const float time) {
 
 
 	//Bullet hit walls collison
-	/*for (int i = 0; i < NUMWALL; ++i) {
+	/*for (int i = 0; i < 1; ++i) {
 		for (int i = 0; i < bullets.size(); ++i) {
-			if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
-				Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
-				bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
-				if (bullets[i]->getRemainingBounces() < 0) {
-					bullets.erase(bullets.begin() + i);
-					break;
+			if (bullets[i]->getPos().y < level->getWall(i)->getPos().y && bullets[i]->getPos().y > level->getWall(i)->getPos().y - 80.0f ){
+				if (Physics::PlaneSphereCollision(*bullets[i], level->getWall(i)->GetLeft()) == true) {
+					Physics::PlaneSphereCollisionResponse(*bullets[i], level->getWall(i)->GetLeft());
+					bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+					if (bullets[i]->getRemainingBounces() < 0) {
+						bullets.erase(bullets.begin() + i);
+						break;
+					}
 				}
 			}
-
-
-
 		}
 	}*/
+
 }
 
-void Scene0::HandleEvents(const SDL_Event& sdlEvent) {
-	//Make stuff happen here with the clickety clack
+void Scene0::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
+
 	player->HandleEvents(sdlEvent, projectionMatrix);
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {

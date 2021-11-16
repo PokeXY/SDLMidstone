@@ -67,18 +67,22 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 		switch (sdlEvent.key.keysym.scancode) {
 
 			case SDL_SCANCODE_W:
+				//pos.y += moveSpeed;
 				vel = Vec3(0.0f, moveSpeed, 0.0f);
 				break;
 
 			case SDL_SCANCODE_A:
+				//pos.x += -moveSpeed;
 				vel = Vec3(-moveSpeed, 0.0f, 0.0f);
 				break;
 
 			case SDL_SCANCODE_S:
+				//pos.y += -moveSpeed;
 				vel = Vec3(0.0f, -moveSpeed, 0.0f);
 				break;
 
 			case SDL_SCANCODE_D:
+				//pos.x += moveSpeed;
 				vel = Vec3(moveSpeed, 0.0f, 0.0f);
 				break;
 
@@ -87,9 +91,11 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 		}
 	}
 
-	if (sdlEvent.type == SDL_KEYUP) {
+	/*if (sdlEvent.type == SDL_KEYUP) {
 		vel = Vec3(0.0f);
-	}
+	}*/
+
+
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEMOTION) {
 		Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);

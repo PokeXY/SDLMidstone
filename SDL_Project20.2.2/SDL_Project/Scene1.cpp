@@ -81,7 +81,7 @@ bool Scene1::OnCreate() {
 
 	//Making the level
 	level = new Level(NUMWALL);
-	level->makeLevel(0); // It breaks here why????
+	level->makeLevel(0); 
 	level->setWallTextures(texturePtr);
 
 	//load player character
@@ -130,10 +130,10 @@ bool Scene1::OnCreate() {
 }
 
 void Scene1::OnDestroy() {
-	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
+	/*if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
 	if (background) delete background, background = nullptr;
-	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
+	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;*/
 	if (player) delete player, player = nullptr;
 	if (level) delete level, level = nullptr;
 
