@@ -44,3 +44,8 @@ void EnemyCharacter::dead() {
 
 }
 
+void EnemyCharacter::projectile()
+{
+
+}
+

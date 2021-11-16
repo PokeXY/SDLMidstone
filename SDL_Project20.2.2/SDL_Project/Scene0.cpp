@@ -49,7 +49,7 @@ bool Scene0::OnCreate() {
 
 
 	//Load the crouton image and set the texture as well
-	surfacePtr = IMG_Load("Art/placeholderCrouton.png");
+	surfacePtr = IMG_Load("Art/Crouton256.png");
 	croutonTexture = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -85,7 +85,7 @@ bool Scene0::OnCreate() {
 	level->setWallTextures(texturePtr);
 
 	//load player character
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/BreadManConcept.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -105,7 +105,7 @@ bool Scene0::OnCreate() {
 	player->setTexture(texturePtr);
 
 	//load enemy characters
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/The Unbread.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
