@@ -25,6 +25,7 @@
     <ClCompile Include="PlayerCharacter.cpp" />
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="Scene0.cpp" />
+    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="Randomizer.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene0.h" />
+    <ClInclude Include="Scene1.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />

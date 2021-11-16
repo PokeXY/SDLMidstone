@@ -11,29 +11,7 @@ Scene0::Scene0(SDL_Window* sdlWindow_){
 }
 
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
-	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
-	if (texturePtr) delete texturePtr, texturePtr = nullptr;
-	if (background) delete background, background = nullptr;
-	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
-	if (player) delete player, player = nullptr;
-	if (level) delete level, level = nullptr;
-	
-
-	/*for (Wall* Wall : walls) {
-		delete Wall;
-	}*/
-	for (Bullet* Bullet : bullets) {
-		delete Bullet;
-	}
-	for (EnemyCharacter* EnemyCharacter : enemies) {
-		delete EnemyCharacter;
-	}
-	if (wallLeft) delete wallLeft, wallLeft = nullptr;
-	if (wallRight) delete wallRight, wallRight = nullptr;
-	if (wallTop) delete wallTop, wallTop = nullptr;
-	if (wallBottom) delete wallBottom, wallBottom = nullptr;
-
-	SDL_DestroyRenderer(renderer);
+	OnDestroy();
 }
 
 bool Scene0::OnCreate() {
@@ -152,6 +130,30 @@ bool Scene0::OnCreate() {
 }
 
 void Scene0::OnDestroy() {  
+	if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
+	if (texturePtr) delete texturePtr, texturePtr = nullptr;
+	if (background) delete background, background = nullptr;
+	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;
+	if (player) delete player, player = nullptr;
+	level->~Level();
+	if (level) delete level, level = nullptr;
+
+
+	/*for (Wall* Wall : walls) {
+		delete Wall;
+	}*/
+	for (Bullet* Bullet : bullets) {
+		delete Bullet;
+	}
+	for (EnemyCharacter* EnemyCharacter : enemies) {
+		delete EnemyCharacter;
+	}
+	if (wallLeft) delete wallLeft, wallLeft = nullptr;
+	if (wallRight) delete wallRight, wallRight = nullptr;
+	if (wallTop) delete wallTop, wallTop = nullptr;
+	if (wallBottom) delete wallBottom, wallBottom = nullptr;
+
+	SDL_DestroyRenderer(renderer);
 }
 
 void Scene0::Update(const float time) {
