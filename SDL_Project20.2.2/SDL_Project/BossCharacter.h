@@ -6,11 +6,13 @@
 class BossCharacter : public EnemyCharacter
 {
 private:
-
+	int bossID;
 
 public:
 	BossCharacter();
 	~BossCharacter();
+
+	//void seekPlayer(Vec3 playerLocation_);
 };
 
 #endif

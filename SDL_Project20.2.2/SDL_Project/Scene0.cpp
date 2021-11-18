@@ -141,10 +141,17 @@ bool Scene0::OnCreate() {
 
 	SDL_FreeSurface(surfacePtr);
 
-	boss = new BossCharacter();
-	boss->setPos(Vec3(2.0f, 2.0f, 2.0f));
-	boss->setBoundingSphere(Sphere(0.5f));
-	boss->setTexture(texturePtr);
+	for (int i = 0; i < 1; ++i)
+	{
+		boss.push_back(new BossCharacter());
+		boss[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		boss[i]->setBoundingSphere(Sphere(0.5f));
+		boss[i]->setTexture(texturePtr);
+		//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
+		//boss->setBoundingSphere(Sphere(0.5f));
+		//boss->setTexture(texturePtr);
+	}
+
 
 
 	return true;
@@ -168,6 +175,9 @@ void Scene0::OnDestroy() {
 	for (EnemyCharacter* EnemyCharacter : enemies) {
 		delete EnemyCharacter;
 	}
+	for (BossCharacter* BossCharacter : boss) {
+		delete BossCharacter;
+	}
 	if (wallLeft) delete wallLeft, wallLeft = nullptr;
 	if (wallRight) delete wallRight, wallRight = nullptr;
 	if (wallTop) delete wallTop, wallTop = nullptr;
@@ -190,6 +200,13 @@ void Scene0::Update(const float time) {
 		Physics::SimpleNewtonMotion(*enemies[i], time);
 	}
 
+	//Boss Movement
+	for (int i = 0; i < boss.size(); ++i) {
+		boss[i]->seekPlayer(player->getPos());
+		Physics::SimpleNewtonMotion(*boss[i], time);
+	}
+
+
 	//Player Hits Wall
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
@@ -210,6 +227,7 @@ void Scene0::Update(const float time) {
 	}
 
 	//Bullet Hits Enemy
+	//Will include boss in this next
 	for (int i = 0; i < bullets.size(); ++i) {
 		for (int j = 0; j < enemies.size(); ++j) {
 			if (Physics::SphereSphereCollision(*bullets[i], *enemies[j]) == true) {
@@ -368,19 +386,29 @@ void Scene0::Render() {
 	playerRect.h = playerH * 2;
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
 
+	// draw boss
 	SDL_Rect bossRect;
 	Vec3 bossScreenCoords;
 	int bossW, bossH;
 
+	for (int i = 0; i < boss.size(); ++i) {
+		bossScreenCoords = projectionMatrix * boss[i]->getPos();
+		SDL_QueryTexture(boss[i]->getTexture(), nullptr, nullptr, &bossW, &bossH);
+		bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
+		bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
+		bossRect.w = bossW;
+		bossRect.h = bossH;
 
-	SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
-	bossScreenCoords = projectionMatrix * boss->getPos();
-	bossRect.x = static_cast<int>(bossScreenCoords.x) - bossW;
-	bossRect.y = static_cast<int>(bossScreenCoords.y) - bossH;
-	bossRect.w = playerW * 2;
-	bossRect.h = playerH * 2;
+		SDL_RenderCopy(renderer, boss[i]->getTexture(), nullptr, &bossRect);
+	}
+	//SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+	//bossScreenCoords = projectionMatrix * boss->getPos();
+	//bossRect.x = static_cast<int>(bossScreenCoords.x) - bossW;
+	//bossRect.y = static_cast<int>(bossScreenCoords.y) - bossH;
+	//bossRect.w = playerW * 2;
+	//bossRect.h = playerH * 2;
 
-	SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
+	//SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
 
 	//Draw Bullets
 	SDL_Rect bulletRect;
