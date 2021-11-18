@@ -126,6 +126,27 @@ bool Scene0::OnCreate() {
 		enemies[i]->setTexture(texturePtr);
 	}
 
+	//load boss characters
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	boss = new BossCharacter();
+	boss->setPos(Vec3(2.0f, 2.0f, 2.0f));
+	boss->setBoundingSphere(Sphere(0.5f));
+	boss->setTexture(texturePtr);
+
+
 	return true;
 }
 
@@ -346,6 +367,20 @@ void Scene0::Render() {
 	playerRect.w = playerW * 2;
 	playerRect.h = playerH * 2;
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
+
+	SDL_Rect bossRect;
+	Vec3 bossScreenCoords;
+	int bossW, bossH;
+
+
+	SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+	bossScreenCoords = projectionMatrix * boss->getPos();
+	bossRect.x = static_cast<int>(bossScreenCoords.x) - bossW;
+	bossRect.y = static_cast<int>(bossScreenCoords.y) - bossH;
+	bossRect.w = playerW * 2;
+	bossRect.h = playerH * 2;
+
+	SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
 
 	//Draw Bullets
 	SDL_Rect bulletRect;
