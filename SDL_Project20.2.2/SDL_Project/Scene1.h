@@ -15,7 +15,7 @@ using namespace MATH;
 struct MATH::Plane;
 
 //Numbers of walls 
-#define NUMWALL 58
+#define NUMWALL 78
 
 class Scene1 : public Scene {
 private:

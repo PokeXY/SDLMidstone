@@ -275,7 +275,7 @@ void Scene0::Update(const float time) {
 	}
 
 	//Bullet Hits Walls
-	for (int i = 0; i < bullets.size(); ++i) {
+	for (int i = 0; i < bullets.size(); ++i) {  //Idk who wrote this, but it's beatiful
 		for (int j = 0; j < level->getWallNum(); ++j) {
 			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
 				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
