@@ -97,3 +97,88 @@ void Physics::SphereSphereCollisionResponse(PhysicsObject& object1, PhysicsObjec
 		}
 	}
 }
+
+bool Physics::CircleRectCollision(const PhysicsObject& circle, const PhysicsObject& rect) {
+	//absolute distance between center of circle and rectangle
+	float circleDistancex = abs(circle.pos.x - rect.pos.x);
+	float circleDistancey = abs(circle.pos.y - rect.pos.y);
+	//intersection not possible
+	if (circleDistancex > (rect.boundingBoxWidth / 2.0f + circle.boundingSphere.r)) { return false; }
+	if (circleDistancey > (rect.boundingBoxHeight / 2.0f + circle.boundingSphere.r)) { return false; }
+	//must be intersection
+	if (circleDistancex <= (rect.boundingBoxWidth / 2.0f)) { return true; }
+	if (circleDistancey <= (rect.boundingBoxHeight / 2.0f)) { return true; }
+	//check for corner of rectangle intersection
+	float cornerDistance_sq = (circleDistancex - rect.boundingBoxWidth / 2.0f) * (circleDistancex - rect.boundingBoxWidth / 2.0f) + 
+		(circleDistancey - rect.boundingBoxHeight / 2.0f) * (circleDistancey - rect.boundingBoxHeight / 2.0f);
+	return (cornerDistance_sq <= (circle.boundingSphere.r * circle.boundingSphere.r));
+}
+
+void Physics::CircleRectCollisionResponse(PhysicsObject& circle, PhysicsObject& rect) {
+	float e = 1.0f;
+	float halfRectHeight = rect.boundingBoxHeight / 2.0f;
+	float halfRectWidth = rect.boundingBoxWidth / 2.0f;
+	//circle hitting left side of rectangle
+	if (rect.pos.y - halfRectHeight <= circle.pos.y <= rect.pos.y + halfRectHeight && circle.vel.x > 0.0f ) {
+		Vec3 normal(-1.0f, 0.0f, 0.0f);
+		Vec3 normalizedNormal = MATH::VMath::normalize(normal);
+		Vec3 projection = MATH::VMath::dot(-circle.vel, normalizedNormal) * normalizedNormal;
+		Vec3 newVel = circle.vel + 2 * projection;
+
+		float velDirectionCheck = MATH::VMath::dot(projection, normal);   //check if sphere was already moving away from plane
+		float angle = acosf(velDirectionCheck / (MATH::VMath::mag(projection)) * (MATH::VMath::mag(normal))) * 180 / M_PI;
+		if (angle == 180) {
+			return;
+		}
+
+		circle.setVel(newVel * e);
+	}
+	//circle hitting right side of rectangle
+	else if (rect.pos.y - halfRectHeight <= circle.pos.y <= rect.pos.y + halfRectHeight && circle.vel.x < 0.0f) {
+		Vec3 normal(1.0f, 0.0f, 0.0f);
+		Vec3 normalizedNormal = MATH::VMath::normalize(normal);
+		Vec3 projection = MATH::VMath::dot(-circle.vel, normalizedNormal) * normalizedNormal;
+		Vec3 newVel = circle.vel + 2 * projection;
+
+		float velDirectionCheck = MATH::VMath::dot(projection, normal);   //check if sphere was already moving away from plane
+		float angle = acosf(velDirectionCheck / (MATH::VMath::mag(projection)) * (MATH::VMath::mag(normal))) * 180 / M_PI;
+		if (angle == 180) {
+			return;
+		}
+
+		circle.setVel(newVel * e);
+	}
+	//circle hitting top side of rectangle
+	else if (rect.pos.x - halfRectWidth <= circle.pos.x <= rect.pos.x + halfRectWidth && circle.vel.y > 0.0f) {
+		Vec3 normal(0.0f, -1.0f, 0.0f);
+		Vec3 normalizedNormal = MATH::VMath::normalize(normal);
+		Vec3 projection = MATH::VMath::dot(-circle.vel, normalizedNormal) * normalizedNormal;
+		Vec3 newVel = circle.vel + 2 * projection;
+
+		float velDirectionCheck = MATH::VMath::dot(projection, normal);   //check if sphere was already moving away from plane
+		float angle = acosf(velDirectionCheck / (MATH::VMath::mag(projection)) * (MATH::VMath::mag(normal))) * 180 / M_PI;
+		if (angle == 180) {
+			return;
+		}
+
+		circle.setVel(newVel * e);
+	}
+	//circle hitting bottom side of rectangle
+	else if (rect.pos.y - halfRectWidth <= circle.pos.y <= rect.pos.y + halfRectWidth && circle.vel.y < 0.0f) {
+		Vec3 normal(0.0f, 1.0f, 0.0f);
+		Vec3 normalizedNormal = MATH::VMath::normalize(normal);
+		Vec3 projection = MATH::VMath::dot(-circle.vel, normalizedNormal) * normalizedNormal;
+		Vec3 newVel = circle.vel + 2 * projection;
+
+		float velDirectionCheck = MATH::VMath::dot(projection, normal);   //check if sphere was already moving away from plane
+		float angle = acosf(velDirectionCheck / (MATH::VMath::mag(projection)) * (MATH::VMath::mag(normal))) * 180 / M_PI;
+		if (angle == 180) {
+			return;
+		}
+
+		circle.setVel(newVel * e);
+	}
+	else {
+		printf("Something is wrong with circle rect collision\n");
+	}
+}

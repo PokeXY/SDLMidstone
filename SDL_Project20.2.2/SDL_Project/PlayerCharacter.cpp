@@ -27,7 +27,7 @@ Bullet PlayerCharacter::FireWeapon() {
 		float velx = 10.0f * cos(angle * M_PI / 180);
 		float vely = -10.0f * sin(angle * M_PI / 180);
 
-		bullet.setBoundingSphere(Sphere(1.0f));
+		bullet.setBoundingSphere(Sphere(0.25f));
 
 		float offsetx = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * cos(angle * M_PI / 180);
 		float offsety = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * sin(angle * M_PI / 180);

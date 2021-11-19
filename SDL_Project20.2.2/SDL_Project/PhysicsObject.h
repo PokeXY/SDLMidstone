@@ -14,6 +14,7 @@ protected:
 	Sphere boundingSphere;
 	double angle, angularVel, angularAccel, rotationalI;
 	bool fixedStatus;
+	float boundingBoxHeight, boundingBoxWidth;
 public:
 	PhysicsObject();
 	virtual ~PhysicsObject();
@@ -37,6 +38,10 @@ public:
 	inline double getAngularVel() { return angularVel; }
 	inline void setAngularAccel(const double angularAccel_) { angularAccel = angularAccel_; }
 	inline double getAngularAccel() { return angularAccel; }
+	inline void setBoundingBoxWidth(const float boundingBoxWidth_) { boundingBoxWidth = boundingBoxWidth_; }
+	inline float getBoundingBoxWidth() { return boundingBoxWidth; }
+	inline void setBoundingBoxHeight(const float boundingBoxHeight_) { boundingBoxHeight = boundingBoxHeight_; }
+	inline float getBoundingBoxHeight() { return boundingBoxHeight; }
 	//simple physics functions
 	inline void applyTorque(const double torque) { angularAccel = torque / rotationalI; }
 	inline void applyForce(const Vec3 force) {accel = force / mass; }

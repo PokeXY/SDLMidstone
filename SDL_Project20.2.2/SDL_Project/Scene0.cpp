@@ -188,12 +188,10 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
-
+	
     //Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
 	
-
-
 	//Enemy Movement
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemies[i]->seekPlayer(player->getPos());
@@ -206,8 +204,7 @@ void Scene0::Update(const float time) {
 		Physics::SimpleNewtonMotion(*boss[i], time);
 	}
 
-
-	//Player Hits Wall
+	//Player Hits Edge of Window Walls
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
@@ -257,6 +254,21 @@ void Scene0::Update(const float time) {
 		if (Physics::SphereSphereCollision(*enemies[i], *player) == true) {
 			player->takeDamage(1.0f);
 			enemies.erase(enemies.begin() + i);
+		}
+	}
+
+	//Bullet Hits Walls
+	for (int i = 0; i < bullets.size(); ++i) {
+		printf("%f\n", bullets[0]->getVel().x);
+		for (int j = 0; j < level->getWallNum(); ++j) {
+			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
+				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
+				bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+				if (bullets[i]->getRemainingBounces() < 0) {
+					bullets.erase(bullets.begin() + i);
+					break;
+				}
+			}
 		}
 	}
 	
@@ -334,7 +346,7 @@ void Scene0::Render() {
 	//Clear screen
 	SDL_RenderClear(renderer);
 	
-	//Draws the back ground
+	//Draws the background
 	SDL_Rect bg;
 	bg.x = 0;
 	bg.y = 0;
@@ -350,8 +362,8 @@ void Scene0::Render() {
 	for (int i = 0; i < NUMWALL; ++i) {
 		SDL_QueryTexture(level->getWall(i)->getTexture(), nullptr, nullptr, &WallW, &WallH);
 		wallScreenCoords = projectionMatrix * level->getWall(i)->getPos();
-		WallRect.x = static_cast<int> (wallScreenCoords.x);
-		WallRect.y = static_cast<int> (wallScreenCoords.y);
+		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;
+		WallRect.y = static_cast<int> (wallScreenCoords.y) - 40;
 		WallRect.w = 80;
 		WallRect.h = 80;
 		SDL_RenderCopy(renderer, level->getWall(i)->getTexture(), nullptr, &WallRect);

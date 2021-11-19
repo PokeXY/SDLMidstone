@@ -12,6 +12,8 @@ public:
 	static void PlaneSphereCollisionResponse(PhysicsObject& object, const Plane& p);
 	static bool SphereSphereCollision(const PhysicsObject& object1, const PhysicsObject& object2);
 	static void SphereSphereCollisionResponse(PhysicsObject& object1, PhysicsObject& object2);
+	static bool CircleRectCollision(const PhysicsObject& circle, const PhysicsObject& rect);
+	static void CircleRectCollisionResponse(PhysicsObject& circle, PhysicsObject& rect);
 };
 
 #endif

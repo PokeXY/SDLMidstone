@@ -15,6 +15,7 @@ public:
 	void makeLevel(int sceneNum);
 	void setWallTextures(SDL_Texture* texturePtr);
 	Wall* getWall(int i) { return walls[i]; }
+	int getWallNum() { return wallNum; }
 
 };
 
