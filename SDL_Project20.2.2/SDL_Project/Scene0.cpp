@@ -101,7 +101,7 @@ bool Scene0::OnCreate() {
 
 	player = new PlayerCharacter();
 	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
-	player->setBoundingSphere(Sphere(1.0f));
+	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
 	//load enemy characters
@@ -121,7 +121,7 @@ bool Scene0::OnCreate() {
 
 	for (int i = 0; i < 4; ++i) {
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 2.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
@@ -157,7 +157,7 @@ bool Scene0::OnCreate() {
 	return true;
 }
 
-void Scene0::OnDestroy() {  
+void Scene0::OnDestroy() {
 	/*if (surfacePtr) delete surfacePtr, surfacePtr = nullptr;
 	if (texturePtr) delete texturePtr, texturePtr = nullptr;
 	if (background) delete background, background = nullptr;
@@ -188,10 +188,10 @@ void Scene0::OnDestroy() {
 
 void Scene0::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
-	
-    //Player Movement
+
+	//Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
-	
+
 	//Enemy Movement
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemies[i]->seekPlayer(player->getPos());
@@ -205,6 +205,7 @@ void Scene0::Update(const float time) {
 	}
 
 	//Player Hits Edge of Window Walls
+	//Potentially Obsolete with working circle rect collision
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
@@ -218,6 +219,12 @@ void Scene0::Update(const float time) {
 		player->setPos(Vec3(player->getPos().x, player->getBoundingSphere().r, player->getPos().z));
 	}
 
+	//Player Hits Walls
+	for (int i = 0; i < level->getWallNum(); ++i) {
+		if (Physics::CircleRectCollision(*player, *level->getWall(i)) == true) {
+			Physics::SimpleNewtonMotion(*player, -time);
+		}
+	}
 	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
@@ -249,6 +256,16 @@ void Scene0::Update(const float time) {
 	//TODO : Enemy Hits Enemy
 	//Prevent overlapping
 
+	//Enemies Hit Walls
+	//TODO : Improve enemy pathfinding
+	for (int i = 0; i < level->getWallNum(); ++i) {
+		for (int j = 0; j < enemies.size(); ++j) {
+			if (Physics::CircleRectCollision(*enemies[j], *level->getWall(i)) == true) {
+				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);
+			}
+		}
+	}
+
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
 		if (Physics::SphereSphereCollision(*enemies[i], *player) == true) {
@@ -259,7 +276,6 @@ void Scene0::Update(const float time) {
 
 	//Bullet Hits Walls
 	for (int i = 0; i < bullets.size(); ++i) {
-		printf("%f\n", bullets[0]->getVel().x);
 		for (int j = 0; j < level->getWallNum(); ++j) {
 			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
 				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
@@ -273,6 +289,7 @@ void Scene0::Update(const float time) {
 	}
 	
 	//Bullet Border Wall Collisions
+	//Potentially Obsolete with working circle rect collision
 	for (int i = 0; i < bullets.size(); ++i) {
 		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
 			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
@@ -307,25 +324,6 @@ void Scene0::Update(const float time) {
 			}
 		}
 	}
-
-
-
-	//Bullet hit walls collison
-	/*for (int i = 0; i < 1; ++i) {
-		for (int i = 0; i < bullets.size(); ++i) {
-			if (bullets[i]->getPos().y < level->getWall(i)->getPos().y && bullets[i]->getPos().y > level->getWall(i)->getPos().y - 80.0f ){
-				if (Physics::PlaneSphereCollision(*bullets[i], level->getWall(i)->GetLeft()) == true) {
-					Physics::PlaneSphereCollisionResponse(*bullets[i], level->getWall(i)->GetLeft());
-					bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
-					if (bullets[i]->getRemainingBounces() < 0) {
-						bullets.erase(bullets.begin() + i);
-						break;
-					}
-				}
-			}
-		}
-	}*/
-
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
