@@ -81,7 +81,7 @@ bool Scene1::OnCreate() {
 
 	//Making the level
 	level = new Level(NUMWALL);
-	level->makeLevel(0); 
+	level->makeLevel(1); //Calls wich level maker to use to place the walls rember to ajust the wallnum to right amount
 	level->setWallTextures(texturePtr);
 
 	//load player character
@@ -221,6 +221,21 @@ void Scene1::Update(const float time) {
 		}
 	}
 
+	//Bullet Hits Walls
+	for (int i = 0; i < bullets.size(); ++i) {  //Idk who wrote this, but it's beatiful
+		//printf("%f\n", bullets[0]->getVel().x);
+		for (int j = 0; j < level->getWallNum(); ++j) {
+			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
+				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
+				bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
+				if (bullets[i]->getRemainingBounces() < 0) {
+					bullets.erase(bullets.begin() + i);
+					break;
+				}
+			}
+		}
+	}
+
 	//Bullet Border Wall Collisions
 	for (int i = 0; i < bullets.size(); ++i) {
 		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
@@ -259,22 +274,7 @@ void Scene1::Update(const float time) {
 
 
 
-	//Bullet hit walls collison
-	/*for (int i = 0; i < NUMWALL; ++i) {
-		for (int i = 0; i < bullets.size(); ++i) {
-			if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
-				Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
-				bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
-				if (bullets[i]->getRemainingBounces() < 0) {
-					bullets.erase(bullets.begin() + i);
-					break;
-				}
-			}
-
-
-
-		}
-	}*/
+	
 }
 
 void Scene1::HandleEvents(const SDL_Event& sdlEvent) {

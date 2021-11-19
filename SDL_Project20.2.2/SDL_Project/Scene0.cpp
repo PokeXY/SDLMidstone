@@ -258,8 +258,8 @@ void Scene0::Update(const float time) {
 	}
 
 	//Bullet Hits Walls
-	for (int i = 0; i < bullets.size(); ++i) {
-		printf("%f\n", bullets[0]->getVel().x);
+	for (int i = 0; i < bullets.size(); ++i) {  //Idk who wrote this, but it's beatiful
+		//printf("%f\n", bullets[0]->getVel().x);
 		for (int j = 0; j < level->getWallNum(); ++j) {
 			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
 				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
@@ -310,21 +310,7 @@ void Scene0::Update(const float time) {
 
 
 
-	//Bullet hit walls collison
-	/*for (int i = 0; i < 1; ++i) {
-		for (int i = 0; i < bullets.size(); ++i) {
-			if (bullets[i]->getPos().y < level->getWall(i)->getPos().y && bullets[i]->getPos().y > level->getWall(i)->getPos().y - 80.0f ){
-				if (Physics::PlaneSphereCollision(*bullets[i], level->getWall(i)->GetLeft()) == true) {
-					Physics::PlaneSphereCollisionResponse(*bullets[i], level->getWall(i)->GetLeft());
-					bullets[i]->setRemainingBounces(bullets[i]->getRemainingBounces() - 1);
-					if (bullets[i]->getRemainingBounces() < 0) {
-						bullets.erase(bullets.begin() + i);
-						break;
-					}
-				}
-			}
-		}
-	}*/
+	
 
 }
 
