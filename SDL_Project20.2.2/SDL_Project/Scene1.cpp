@@ -11,6 +11,7 @@ Scene1::Scene1(SDL_Window* sdlWindow_) {
 }
 
 Scene1::~Scene1() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
+
 	OnDestroy();
 }
 
@@ -49,7 +50,7 @@ bool Scene1::OnCreate() {
 
 
 	//Load the crouton image and set the texture as well
-	surfacePtr = IMG_Load("Art/placeholderCrouton.png");
+	surfacePtr = IMG_Load("Art/Crouton256.png");
 	croutonTexture = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -81,11 +82,11 @@ bool Scene1::OnCreate() {
 
 	//Making the level
 	level = new Level(NUMWALL);
-	level->makeLevel(1); //Calls wich level maker to use to place the walls rember to ajust the wallnum to right amount
+	level->makeLevel(1);
 	level->setWallTextures(texturePtr);
 
 	//load player character
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/BreadManConcept.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -101,11 +102,11 @@ bool Scene1::OnCreate() {
 
 	player = new PlayerCharacter();
 	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
-	player->setBoundingSphere(Sphere(1.0f));
+	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
 	//load enemy characters
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/The Unbread.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -121,10 +122,41 @@ bool Scene1::OnCreate() {
 
 	for (int i = 0; i < 4; ++i) {
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 2.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
+
+
+	//load boss characters
+	//surfacePtr = IMG_Load("Art/flappybird1.png");
+	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	//for (int i = 0; i < 1; ++i)
+	//{
+	//	//boss = new BossCharacter;
+
+
+	//	//boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+	//	//boss->setBoundingSphere(Sphere(0.5f));
+	//	//boss->setTexture(texturePtr);
+
+	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
+	//	//boss->setBoundingSphere(Sphere(0.5f));
+	//	//boss->setTexture(texturePtr);
+	//}
+
 
 	return true;
 }
@@ -136,6 +168,7 @@ void Scene1::OnDestroy() {
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;*/
 	if (player) delete player, player = nullptr;
 	if (level) delete level, level = nullptr;
+	//if (boss) delete boss, boss = nullptr;
 
 
 	/*for (Wall* Wall : walls) {
@@ -147,6 +180,9 @@ void Scene1::OnDestroy() {
 	for (EnemyCharacter* EnemyCharacter : enemies) {
 		delete EnemyCharacter;
 	}
+	//for (BossCharacter* BossCharacter : boss) {
+	//	delete BossCharacter;
+	//}
 	if (wallLeft) delete wallLeft, wallLeft = nullptr;
 	if (wallRight) delete wallRight, wallRight = nullptr;
 	if (wallTop) delete wallTop, wallTop = nullptr;
@@ -161,15 +197,22 @@ void Scene1::Update(const float time) {
 	//Player Movement
 	Physics::SimpleNewtonMotion(*player, time);
 
-
-
 	//Enemy Movement
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemies[i]->seekPlayer(player->getPos());
 		Physics::SimpleNewtonMotion(*enemies[i], time);
 	}
 
-	//Player Hits Wall
+	//Boss Movement
+	//if (boss)
+	//{
+	//	boss->seekPlayer(player->getPos());
+	//	Physics::SimpleNewtonMotion(*boss, time);
+	//}
+
+
+	//Player Hits Edge of Window Walls
+	//Potentially Obsolete with working circle rect collision
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
@@ -183,12 +226,19 @@ void Scene1::Update(const float time) {
 		player->setPos(Vec3(player->getPos().x, player->getBoundingSphere().r, player->getPos().z));
 	}
 
+	//Player Hits Walls
+	for (int i = 0; i < level->getWallNum(); ++i) {
+		if (Physics::CircleRectCollision(*player, *level->getWall(i)) == true) {
+			Physics::SimpleNewtonMotion(*player, -time);
+		}
+	}
 	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
 	}
 
 	//Bullet Hits Enemy
+	//Will include boss in this next
 	for (int i = 0; i < bullets.size(); ++i) {
 		for (int j = 0; j < enemies.size(); ++j) {
 			if (Physics::SphereSphereCollision(*bullets[i], *enemies[j]) == true) {
@@ -199,8 +249,30 @@ void Scene1::Update(const float time) {
 				}
 				break;
 			}
+
 		}
+
 	}
+
+	// Bullets hit boss
+	/*for (int i = 0; i < bullets.size(); ++i)
+	{
+		if (boss)
+		{
+			if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
+				bullets.erase(bullets.begin() + i);
+				boss->takeDamage(1.0f);
+				if (boss->getHealth() <= 0)
+				{
+					delete boss; boss = nullptr;
+				}
+
+				break;
+
+			}
+		}
+
+	}*/
 
 	//Bullet Hits Player
 	for (int i = 0; i < bullets.size(); ++i) {
@@ -213,6 +285,30 @@ void Scene1::Update(const float time) {
 	//TODO : Enemy Hits Enemy
 	//Prevent overlapping
 
+	//Enemies Hit Walls as well as boss
+	//TODO : Improve enemy pathfinding
+	for (int i = 0; i < level->getWallNum(); ++i) {
+		for (int j = 0; j < enemies.size(); ++j) {
+			if (Physics::CircleRectCollision(*enemies[j], *level->getWall(i)) == true) {
+				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);
+			}
+		}
+
+
+
+
+	}
+
+	/*for (int i = 0; i < level->getWallNum(); ++i)
+	{
+		if (boss)
+		{
+			if (Physics::CircleRectCollision(*boss, *level->getWall(i)) == true) {
+				Physics::SimpleNewtonMotion(*boss, -2 * time);
+			}
+		}
+	}*/
+
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
 		if (Physics::SphereSphereCollision(*enemies[i], *player) == true) {
@@ -223,7 +319,6 @@ void Scene1::Update(const float time) {
 
 	//Bullet Hits Walls
 	for (int i = 0; i < bullets.size(); ++i) {  //Idk who wrote this, but it's beatiful
-		//printf("%f\n", bullets[0]->getVel().x);
 		for (int j = 0; j < level->getWallNum(); ++j) {
 			if (Physics::CircleRectCollision(*bullets[i], *level->getWall(j)) == true) {
 				Physics::CircleRectCollisionResponse(*bullets[i], *level->getWall(j));
@@ -237,6 +332,7 @@ void Scene1::Update(const float time) {
 	}
 
 	//Bullet Border Wall Collisions
+	//Potentially Obsolete with working circle rect collision
 	for (int i = 0; i < bullets.size(); ++i) {
 		if (Physics::PlaneSphereCollision(*bullets[i], *wallLeft) == true) {
 			Physics::PlaneSphereCollisionResponse(*bullets[i], *wallLeft);
@@ -271,14 +367,10 @@ void Scene1::Update(const float time) {
 			}
 		}
 	}
-
-
-
-	
 }
 
-void Scene1::HandleEvents(const SDL_Event& sdlEvent) {
-	//Make stuff happen here with the clickety clack
+void Scene1::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
+
 	player->HandleEvents(sdlEvent, projectionMatrix);
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {
@@ -295,7 +387,7 @@ void Scene1::Render() {
 	//Clear screen
 	SDL_RenderClear(renderer);
 
-	//Draws the back ground
+	//Draws the background
 	SDL_Rect bg;
 	bg.x = 0;
 	bg.y = 0;
@@ -311,8 +403,8 @@ void Scene1::Render() {
 	for (int i = 0; i < NUMWALL; ++i) {
 		SDL_QueryTexture(level->getWall(i)->getTexture(), nullptr, nullptr, &WallW, &WallH);
 		wallScreenCoords = projectionMatrix * level->getWall(i)->getPos();
-		WallRect.x = static_cast<int> (wallScreenCoords.x);
-		WallRect.y = static_cast<int> (wallScreenCoords.y);
+		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;
+		WallRect.y = static_cast<int> (wallScreenCoords.y) - 40;
 		WallRect.w = 80;
 		WallRect.h = 80;
 		SDL_RenderCopy(renderer, level->getWall(i)->getTexture(), nullptr, &WallRect);
@@ -346,6 +438,34 @@ void Scene1::Render() {
 	playerRect.w = playerW * 2;
 	playerRect.h = playerH * 2;
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
+
+	// draw boss
+	/*if (boss)
+	{
+		SDL_Rect bossRect;
+		Vec3 bossScreenCoords;
+		int bossW, bossH;
+
+
+		bossScreenCoords = projectionMatrix * boss->getPos();
+		SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+		bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
+		bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
+		bossRect.w = bossW;
+		bossRect.h = bossH;
+
+		SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
+	}*/
+
+
+	//SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+	//bossScreenCoords = projectionMatrix * boss->getPos();
+	//bossRect.x = static_cast<int>(bossScreenCoords.x) - bossW;
+	//bossRect.y = static_cast<int>(bossScreenCoords.y) - bossH;
+	//bossRect.w = playerW * 2;
+	//bossRect.h = playerH * 2;
+
+	//SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
 
 	//Draw Bullets
 	SDL_Rect bulletRect;

@@ -89,8 +89,65 @@ void Level::makeLevel(int sceneNum) { //Makes the level by placing all the walls
 
 
 	case 1: // ## walls needed in scene1
-		//Surronding walls plus a hole for a door
+				//Surronding walls plus a hole for a door
 		//Xpos1 is supose to go here
+		for (int i = 0; i < 16; ++i) { //Top line of walls 16 wall needed
+			walls[i]->setPos(Vec3(xpos1, 17.0f, 0.0f));
+			xpos1 += 2;
+		}
+
+		for (int i = 16; i < 24; ++i) { //Left line of walls 8 walls needed
+			walls[i]->setPos(Vec3(1.0f, ypos1, 0.0f));
+			ypos1 += 2;
+		}
+
+		for (int i = 24; i < 40; ++i) { //Bottom line of walls 15 wall needed
+			walls[i]->setPos(Vec3(xpos2, 1.0f, 0.0f));
+			xpos2 += 2;
+		}
+
+		for (int i = 40; i < 43; ++i) { //Right bottom under door 3 walls needed
+			walls[i]->setPos(Vec3(31.0f, ypos2, 0.0f));
+			ypos2 += 2;
+		}
+
+		ypos2 += 2;
+		for (int i = 43; i < 46; ++i) { //Right upper under door 3 walls needed
+			walls[i]->setPos(Vec3(31.0f, ypos2, 0.0f));
+			ypos2 += 2;
+		}
+
+		//Interior walls     using xpos3 strating at 4 I'm making a big pryamid
+		xpos3 = 3.0f;
+		for (int i = 46; i < 60; i++) { //Frist row
+			walls[i]->setPos(Vec3(xpos3, 15.0f, 0.0f));
+			xpos3 += 2.0f;
+		}
+
+
+		xpos3 = 7.0f;
+		for (int i = 60; i < 70; i++) { //Second row
+			walls[i]->setPos(Vec3(xpos3, 13.0f, 0.0f));
+			xpos3 += 2.0f;
+		}
+
+		xpos3 = 11.0f;
+		for (int i = 70; i < 76; i++) { //Third row
+			walls[i]->setPos(Vec3(xpos3, 11.0f, 0.0f));
+			xpos3 += 2.0f;
+		}
+
+		xpos3 = 15.0f;
+		for (int i = 76; i < 78; i++) { //Forth row last row
+			walls[i]->setPos(Vec3(xpos3, 9.0f, 0.0f));
+			xpos3 += 2.0f;
+		}
+
+		break;
+
+	case 2:
+		//Surronding walls plus a hole for a door
+//Xpos1 is supose to go here
 		for (int i = 0; i < 16; ++i) { //Top line of walls 16 wall needed
 			walls[i]->setPos(Vec3(xpos1, 18.0f, 0.0f));
 			xpos1 += 2;
@@ -115,35 +172,14 @@ void Level::makeLevel(int sceneNum) { //Makes the level by placing all the walls
 		for (int i = 43; i < 46; ++i) { //Right upper under door 3 walls needed
 			walls[i]->setPos(Vec3(30.0f, ypos2, 0.0f));
 			ypos2 += 2;
+
 		}
 
-		//Interior walls     using xpos3 strating at 4 I'm making a big pryamid
-		xpos3 = 2.0f;
-		for (int i = 46; i < 60; i++) { //Frist row
-			walls[i]->setPos(Vec3(xpos3, 16.0f, 0.0f));
-			xpos3 += 2.0f;
-		}
+		//Interior walls
 
-
-		xpos3 = 6.0f;
-		for (int i = 60; i < 70; i++) { //Second row
-			walls[i]->setPos(Vec3(xpos3, 14.0f, 0.0f));
-			xpos3 += 2.0f;
-		}
-
-		xpos3 = 10.0f;
-		for (int i = 70; i < 76; i++) { //Third row
-			walls[i]->setPos(Vec3(xpos3, 12.0f, 0.0f));
-			xpos3 += 2.0f;
-		}
-
-		xpos3 = 14.0f;
-		for (int i = 76; i < 78; i++) { //Forth row last row
-			walls[i]->setPos(Vec3(xpos3, 10.0f, 0.0f));
-			xpos3 += 2.0f;
-		}
 
 		break;
+
 	default:
 		break;
 	}
