@@ -1,6 +1,6 @@
 #include "BossCharacter.h"
 
-BossCharacter::BossCharacter() : bossID(0)
+BossCharacter::BossCharacter()
 {
 }
 

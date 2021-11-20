@@ -28,14 +28,14 @@ private:
 	SDL_Texture* background;
 	SDL_Texture* croutonTexture;
 	PlayerCharacter* player;
-	//BossCharacter* boss;
+	BossCharacter* boss;
 
 	Level* level;
 
 	//std::vector<Wall*> walls;
 	std::vector<Bullet*> bullets;
 	std::vector<EnemyCharacter*> enemies;
-	std::vector<BossCharacter*> boss;
+
 
 	Plane* wallLeft; 
 	Plane* wallRight; 

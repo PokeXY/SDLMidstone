@@ -6,7 +6,6 @@
 class BossCharacter : public EnemyCharacter
 {
 private:
-	int bossID;
 
 public:
 	BossCharacter();
