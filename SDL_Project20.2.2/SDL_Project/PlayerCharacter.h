@@ -9,6 +9,7 @@ class PlayerCharacter : public Character
 private:
 	bool mouseDown;
 	bool isInvincible;
+	bool isDead;
 	Vec3 lookDirection;
 	int weaponType;
 

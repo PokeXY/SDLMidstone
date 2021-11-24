@@ -1,7 +1,7 @@
 #include "PlayerCharacter.h"
 #include <SDL.h>
 
-PlayerCharacter::PlayerCharacter() : mouseDown(0), isInvincible(0), weaponType(0), lookDirection(0.0f)
+PlayerCharacter::PlayerCharacter() : mouseDown(0), isInvincible(0), weaponType(0), lookDirection(0.0f), isDead(0)
 {
 }
 
@@ -58,6 +58,7 @@ bool PlayerCharacter::restoreHealth(float healingAmount_) {
 }
 
 void PlayerCharacter::dead() {
+	isDead = true;
 	printf("You Died\n");
 };
 

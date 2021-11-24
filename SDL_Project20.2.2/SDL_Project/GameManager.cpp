@@ -75,12 +75,9 @@ void GameManager::Run() {
 					break;
 
 					// If we need more scenes later I don't wanna rewrite this 
-				/*case SDL_SCANCODE_F2:
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene2(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+				case SDL_SCANCODE_F2:
 					break;
+/*
 				case SDL_SCANCODE_F3:
 					currentScene->OnDestroy();
 					delete currentScene;
@@ -115,6 +112,8 @@ void GameManager::Run() {
 
 			}
 		}
+
+
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 		
@@ -133,7 +132,9 @@ void GameManager::ToggleFullscreen(SDL_Window* Window) {
 	SDL_ShowCursor(IsFullscreen);
 }
 
-GameManager::~GameManager() {}
+GameManager::~GameManager() {
+	OnDestroy();
+}
 
 void GameManager::OnDestroy(){
 	if (windowPtr) delete windowPtr;

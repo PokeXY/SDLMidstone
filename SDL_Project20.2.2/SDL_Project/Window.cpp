@@ -16,7 +16,7 @@ bool Window::OnCreate(){
 		return false;
 	}
 
-	window = SDL_CreateWindow("Project Crouton", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Crouton Strike The Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 	if (window == nullptr) {
 		std::cout << "SDL_Error: " << SDL_GetError() << std::endl;
 		return false;

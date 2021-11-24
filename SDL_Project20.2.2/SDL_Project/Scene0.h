@@ -50,6 +50,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event &sdlEvent );
+	
 };
 
 #endif
