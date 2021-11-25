@@ -488,3 +488,9 @@ void Scene1::Render() {
 
 
 }
+
+
+bool Scene1::getDead() {
+	if (player->getHealth() <= 0) return true;
+	return false;
+}

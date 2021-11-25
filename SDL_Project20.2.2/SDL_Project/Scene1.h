@@ -38,7 +38,7 @@ private:
 	Plane* wallRight;
 	Plane* wallTop;
 	Plane* wallBottom;
-	bool isDead;
+	
 
 public:
 	Scene1(SDL_Window* sdlWindow);
@@ -48,7 +48,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
-	bool getDead() { return isDead; }
+	bool getDead();
 };
 
 #endif
