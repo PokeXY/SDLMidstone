@@ -1,7 +1,17 @@
+#ifndef SCENE0_H
+#define SCENE0_H
+
+#include <SDL.h>
+#include <vector>
+#include "Scene.h"
+#include "GameObject.h"
+#include "PlayerCharacter.h"
+#include "EnemyCharacter.h"
+#include "Bullet.h"
 #include "Plane.h"
 #include "Level.h"
 #include "BossCharacter.h"
-#include "Health.h"
+//#include "Health.h"
 
 using namespace MATH;
 struct MATH::Plane;
