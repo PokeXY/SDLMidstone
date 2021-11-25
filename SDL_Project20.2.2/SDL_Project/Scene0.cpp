@@ -105,6 +105,25 @@ bool Scene0::OnCreate() {
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
+	//character health
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	/*
+	SDL_FreeSurface(surfacePtr);
+	health = new Health();
+	health->setPos(Vec3(10.0f, 5.0f, 0.0f));
+	//health->setTexture(texturePtr);
+	*/
+
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
@@ -169,6 +188,7 @@ void Scene0::OnDestroy() {
 	if (player) delete player, player = nullptr;
 	if (level) delete level, level = nullptr;
 	if (boss) delete boss, boss = nullptr;
+	//if (health) delete health , health = nullptr;;
 
 
 	/*for (Wall* Wall : walls) {
@@ -483,8 +503,21 @@ void Scene0::Render() {
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
 	}
 	
+	/*
+	SDL_Rect healthRect;
+	Vec3 healthScreenCoords;
+	int healthW, healthH;
+
+	SDL_QueryTexture(health->getTexture(), nullptr, nullptr, &healthW, &healthH);
+	healthScreenCoords = projectionMatrix * health->getPos();
+	healthRect.x = static_cast<int>(healthScreenCoords.x) - healthW;
+	healthRect.y = static_cast<int>(healthScreenCoords.y) - healthH;
+	healthRect.w = healthW * 2;
+	healthRect.h = healthH * 2;
+	SDL_RenderCopyEx(renderer, health->getTexture(), nullptr, &healthRect, health->getAngle(), nullptr, SDL_FLIP_NONE);
+	*/
+
 	//Update screen
 	SDL_RenderPresent(renderer);
-
 	
 }
