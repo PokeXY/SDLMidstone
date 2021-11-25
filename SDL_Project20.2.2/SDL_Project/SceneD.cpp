@@ -30,7 +30,8 @@ bool SceneD::OnCreate() {
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
-	
+	surfacePtr = IMG_Load("Art/bgSample.png");
+	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
 		std::cerr << "Imgage does not work" << std::endl;
@@ -42,26 +43,8 @@ bool SceneD::OnCreate() {
 	}
 
 	SDL_FreeSurface(surfacePtr);
-
-
-	//Load the crouton image and set the texture as well
-	surfacePtr = IMG_Load("Art/Crouton256.png");
 	
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (background == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
-
-
-	//Loads in the wall image and set the texture to the walls
-	surfacePtr = IMG_Load("Art/Wall02.png");
+	surfacePtr = IMG_Load("Art/YouDied.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -101,14 +84,13 @@ void SceneD::Render() {
 	//Clear screen
 	SDL_RenderClear(renderer);
 
-	//Draws the background
-	SDL_Rect bg;
-	bg.x = 0;
-	bg.y = 0;
-	bg.w = 1280;
-	bg.h = 720;
-	SDL_RenderCopy(renderer, background, nullptr, &bg);
 
+	SDL_Rect youDied;
+	youDied.x = 310;
+	youDied.y = 0;
+	youDied.w = 720;
+	youDied.h = 720;
+	SDL_RenderCopy(renderer, texturePtr, nullptr, &youDied);
 
 
 	//Update screen

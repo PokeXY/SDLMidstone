@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "Scene0.h"
 #include "Scene1.h"
+#include "SceneD.h"
 
 #include <iostream>
 
@@ -75,7 +76,11 @@ void GameManager::Run() {
 					break;
 
 					// If we need more scenes later I don't wanna rewrite this 
-				case SDL_SCANCODE_F2:
+				case SDL_SCANCODE_P:
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new SceneD(windowPtr->GetSDL_Window());
+					currentScene->OnCreate();
 					break;
 /*
 				case SDL_SCANCODE_F3:
