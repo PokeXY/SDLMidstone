@@ -107,22 +107,48 @@ bool Scene0::OnCreate() {
 
 	//character health
 	surfacePtr = IMG_Load("Art/BreadHealth.png");
-	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	health = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
 		std::cerr << "Imgage does not work" << std::endl;
 		return false;
 	}
-	if (texturePtr == nullptr) {
+	if (health == nullptr) {
 		printf("%s\n", SDL_GetError());
 		return false;
 	}
-	/*
+	
 	SDL_FreeSurface(surfacePtr);
-	health = new Health();
-	health->setPos(Vec3(10.0f, 5.0f, 0.0f));
-	//health->setTexture(texturePtr);
-	*/
+
+	//character health1
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	health1 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (health1 == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+	//character health2
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	health2 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (health2 == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
 
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
@@ -503,21 +529,33 @@ void Scene0::Render() {
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
 	}
 	
-	/*
+	
 	SDL_Rect healthRect;
-	Vec3 healthScreenCoords;
-	int healthW, healthH;
+	
+	healthRect.x = 10;
+	healthRect.y = 0;
+	healthRect.w = 50;
+	healthRect.h = 50;
+	SDL_RenderCopy(renderer, health, nullptr, &healthRect);
+	
+	SDL_Rect health1Rect;
 
-	SDL_QueryTexture(health->getTexture(), nullptr, nullptr, &healthW, &healthH);
-	healthScreenCoords = projectionMatrix * health->getPos();
-	healthRect.x = static_cast<int>(healthScreenCoords.x) - healthW;
-	healthRect.y = static_cast<int>(healthScreenCoords.y) - healthH;
-	healthRect.w = healthW * 2;
-	healthRect.h = healthH * 2;
-	SDL_RenderCopyEx(renderer, health->getTexture(), nullptr, &healthRect, health->getAngle(), nullptr, SDL_FLIP_NONE);
-	*/
+	health1Rect.x = 20;
+	health1Rect.y = 0;
+	health1Rect.w = 50;
+	health1Rect.h = 50;
+	SDL_RenderCopy(renderer, health1, nullptr, &health1Rect);
+
+	SDL_Rect health2Rect;
+
+	health2Rect.x = 30;
+	health2Rect.y = 0;
+	health2Rect.w = 50;
+	health2Rect.h = 50;
+	SDL_RenderCopy(renderer, health2, nullptr, &health2Rect);
 
 	//Update screen
 	SDL_RenderPresent(renderer);
+
 	
 }
