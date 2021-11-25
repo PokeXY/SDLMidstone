@@ -27,6 +27,8 @@ private:
 	SDL_Texture* texturePtr;
 	SDL_Texture* background;
 	SDL_Texture* croutonTexture;
+	SDL_Texture* health;
+	
 	PlayerCharacter* player;
 	BossCharacter* boss;
 
