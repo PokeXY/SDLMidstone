@@ -14,9 +14,6 @@ int main(int argc, char* args[]) { /// Standard C-style entry point, you need to
 		std::cerr << "Fatal error occured. Cannot start this program" << std::endl;
 	}
 
-
-
-
 	delete ptr;
 	return 0;
 

@@ -3,6 +3,7 @@
 #include "SDL_image.h"
 #include "Randomizer.h"
 #include "Physics.h"
+#include "GameManager.h"
 #include <iostream>
 
 Scene0::Scene0(SDL_Window* sdlWindow_){
@@ -413,6 +414,11 @@ void Scene0::Update(const float time) {
 			}
 		}
 	}
+
+
+
+	//Death stuff
+
 }
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
@@ -558,4 +564,10 @@ void Scene0::Render() {
 	SDL_RenderPresent(renderer);
 
 	
+}
+
+
+bool Scene0::getDead() {
+	if (player->getHealth() <= 0) return true;
+	return false;
 }

@@ -25,6 +25,7 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 	void ToggleFullscreen(SDL_Window* Window);
+	
 
 	void Run();
 };

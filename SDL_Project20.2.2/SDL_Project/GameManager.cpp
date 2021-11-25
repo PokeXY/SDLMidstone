@@ -118,6 +118,13 @@ void GameManager::Run() {
 			}
 		}
 
+		if (currentScene->getDead()) {
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new SceneD(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+		}
+
 
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
@@ -146,3 +153,4 @@ void GameManager::OnDestroy(){
 	if (timer) delete timer;
 	if (currentScene) delete currentScene;
 }
+

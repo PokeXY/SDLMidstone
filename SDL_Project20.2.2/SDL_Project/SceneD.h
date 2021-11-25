@@ -25,6 +25,7 @@ private:
 	SDL_Texture* background;
 	
 	
+
 public:
 	SceneD(SDL_Window* sdlWindow);
 	~SceneD();
@@ -33,6 +34,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
+	bool getDead() { return false; }
 };
 
 #endif
