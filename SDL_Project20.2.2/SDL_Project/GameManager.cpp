@@ -4,6 +4,7 @@
 #include "Scene0.h"
 #include "Scene1.h"
 #include "SceneD.h"
+#include "SceneMenu.h"
 
 #include <iostream>
 
@@ -35,7 +36,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 	if (currentScene == nullptr) {
-		currentScene = new Scene0(windowPtr->GetSDL_Window());
+		currentScene = new SceneMenu(windowPtr->GetSDL_Window());
 	}
 
 	if (currentScene == nullptr) {
