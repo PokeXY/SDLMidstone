@@ -9,6 +9,7 @@
 SceneD::SceneD(SDL_Window* sdlWindow_) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	pressed = false;
 }
 
 SceneD::~SceneD() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -75,6 +76,9 @@ void SceneD::Update(const float time) {
 }
 
 void SceneD::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
+	if (sdlEvent.type == SDL_KEYDOWN || sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) { //Move you to the menu when you press any key 
+		pressed = true;
+	}
 
 }
 
@@ -97,4 +101,8 @@ void SceneD::Render() {
 	SDL_RenderPresent(renderer);
 
 
+}
+
+bool SceneD::getDead() {
+	return pressed;
 }

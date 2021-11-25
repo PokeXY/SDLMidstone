@@ -10,6 +10,7 @@
 SceneMenu::SceneMenu(SDL_Window* sdlWindow_) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	play = false;
 }
 
 SceneMenu::~SceneMenu() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -63,7 +64,14 @@ void SceneMenu::Update(const float time) {
 }
 
 void SceneMenu::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
+	Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);
+	Vec3 mousePosWorld = MMath::inverse(projectionMatrix) * mousePosView;
+	//This is the play button it'll load scene zero
+	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN  && 12 < mousePosWorld.x && mousePosWorld.x < 19 && 7 < mousePosWorld.y && mousePosWorld.y < 10) {
+		play = true;
 
+	}
+	
 }
 
 void SceneMenu::Render() {
@@ -85,4 +93,9 @@ void SceneMenu::Render() {
 	SDL_RenderPresent(renderer);
 
 
+}
+
+bool SceneMenu::getDead() {
+	
+	return play;
 }

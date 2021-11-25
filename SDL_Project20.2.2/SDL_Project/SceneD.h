@@ -23,7 +23,7 @@ private:
 	SDL_Surface* surfacePtr;
 	SDL_Texture* texturePtr;
 	SDL_Texture* background;
-	
+	bool pressed;
 	
 
 public:
@@ -34,7 +34,7 @@ public:
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
-	bool getDead() { return false; }
+	bool getDead();
 };
 
 #endif

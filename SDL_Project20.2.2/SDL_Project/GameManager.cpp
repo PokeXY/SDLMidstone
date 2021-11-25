@@ -13,6 +13,9 @@ GameManager::GameManager() {
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+
+	//This will keep track of wich scene it is -1 will be the menu and -2 will be death
+	sceneNum = 0;
 }
 
 
@@ -74,6 +77,7 @@ void GameManager::Run() {
 					delete currentScene;
 					currentScene = new Scene1(windowPtr->GetSDL_Window());
 					currentScene->OnCreate();
+					sceneNum = 1;
 					break;
 
 					// If we need more scenes later I don't wanna rewrite this 
@@ -104,6 +108,7 @@ void GameManager::Run() {
 					delete currentScene;
 					currentScene = new Scene0(windowPtr->GetSDL_Window());
 					currentScene->OnCreate();
+					sceneNum = 0;
 					break;
 
 
@@ -119,14 +124,28 @@ void GameManager::Run() {
 			}
 		}
 
-		if (currentScene->getDead()) {
+		//Check to see what happens when you die. The code decides your fate, worship the code, THE CODE!!!!
+		if (currentScene->getDead() && sceneNum >= 0) {
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new SceneD(windowPtr->GetSDL_Window());
 			currentScene->OnCreate();
+			sceneNum = -2;
 		}
-
-
+		else if (currentScene->getDead() && sceneNum == -1) {
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene0(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 0;
+		}
+		else if (currentScene->getDead() && sceneNum == -2) {
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new SceneMenu(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = -1;
+		}
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 		

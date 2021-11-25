@@ -17,6 +17,7 @@ private:
 	class Window *windowPtr;
 	class Timer *timer;
 	bool isRunning;
+	int sceneNum;
 	Scene *currentScene;
 
 public:
