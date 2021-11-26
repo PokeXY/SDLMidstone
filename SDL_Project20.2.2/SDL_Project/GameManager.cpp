@@ -70,7 +70,11 @@ void GameManager::Run() {
 			else if (sdlEvent.type == SDL_KEYDOWN) {
 				switch (sdlEvent.key.keysym.scancode) {
 				case SDL_SCANCODE_ESCAPE:
-					isRunning = false;
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new SceneMenu(windowPtr->GetSDL_Window());
+					currentScene->OnCreate();
+					sceneNum = -1;
 					break;
 				case SDL_SCANCODE_F1:
 					currentScene->OnDestroy();
@@ -146,6 +150,10 @@ void GameManager::Run() {
 			currentScene->OnCreate();
 			sceneNum = -1;
 		}
+
+
+
+		 
 		currentScene->Update(timer->GetDeltaTime());
 		currentScene->Render();
 		
