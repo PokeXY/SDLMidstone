@@ -121,35 +121,6 @@ bool Scene0::OnCreate() {
 	
 	SDL_FreeSurface(surfacePtr);
 
-	//character health1
-	surfacePtr = IMG_Load("Art/BreadHealth.png");
-	health1 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (health1 == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
-
-	//character health2
-	surfacePtr = IMG_Load("Art/BreadHealth.png");
-	health2 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (health2 == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
 
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
@@ -534,34 +505,42 @@ void Scene0::Render() {
 
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
 	}
-	
-	
-	SDL_Rect healthRect;
-	
-	healthRect.x = 10;
-	healthRect.y = 0;
-	healthRect.w = 50;
-	healthRect.h = 50;
-	SDL_RenderCopy(renderer, health, nullptr, &healthRect);
-	
-	SDL_Rect health1Rect;
+	if (player->getHealth() > 0)
+	{
+		SDL_Rect healthRect;
 
-	health1Rect.x = 20;
-	health1Rect.y = 0;
-	health1Rect.w = 50;
-	health1Rect.h = 50;
-	SDL_RenderCopy(renderer, health1, nullptr, &health1Rect);
+		healthRect.x = 10;
+		healthRect.y = 0;
+		healthRect.w = 100;
+		healthRect.h = 100;
+		SDL_RenderCopy(renderer, health, nullptr, &healthRect);
 
-	SDL_Rect health2Rect;
+		if (player->getHealth() > 1)
+		{
+			SDL_Rect health1Rect;
 
-	health2Rect.x = 30;
-	health2Rect.y = 0;
-	health2Rect.w = 50;
-	health2Rect.h = 50;
-	SDL_RenderCopy(renderer, health2, nullptr, &health2Rect);
+			health1Rect.x = 40;
+			health1Rect.y = 0;
+			health1Rect.w = 100;
+			health1Rect.h = 100;
+			SDL_RenderCopy(renderer, health, nullptr, &health1Rect);
 
+			if (player->getHealth() > 2)
+			{
+				SDL_Rect health2Rect;
+
+				health2Rect.x = 70;
+				health2Rect.y = 0;
+				health2Rect.w = 100;
+				health2Rect.h = 100;
+				SDL_RenderCopy(renderer, health, nullptr, &health2Rect);
+			}
+		}
+	}
 	//Update screen
 	SDL_RenderPresent(renderer);
+
+
 
 	
 }
