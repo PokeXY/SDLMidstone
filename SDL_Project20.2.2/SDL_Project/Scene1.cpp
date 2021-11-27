@@ -105,6 +105,22 @@ bool Scene1::OnCreate() {
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
+	//character health
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	health = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (health == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
@@ -481,6 +497,40 @@ void Scene1::Render() {
 		bulletRect.h = bulletH / 10;
 
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
+	}
+
+
+	if (player->getHealth() > 0)
+	{
+		SDL_Rect healthRect;
+
+		healthRect.x = 10;
+		healthRect.y = 0;
+		healthRect.w = 100;
+		healthRect.h = 100;
+		SDL_RenderCopy(renderer, health, nullptr, &healthRect);
+
+		if (player->getHealth() > 1)
+		{
+			SDL_Rect health1Rect;
+
+			health1Rect.x = 40;
+			health1Rect.y = 0;
+			health1Rect.w = 100;
+			health1Rect.h = 100;
+			SDL_RenderCopy(renderer, health, nullptr, &health1Rect);
+
+			if (player->getHealth() > 2)
+			{
+				SDL_Rect health2Rect;
+
+				health2Rect.x = 70;
+				health2Rect.y = 0;
+				health2Rect.w = 100;
+				health2Rect.h = 100;
+				SDL_RenderCopy(renderer, health, nullptr, &health2Rect);
+			}
+		}
 	}
 
 	//Update screen
