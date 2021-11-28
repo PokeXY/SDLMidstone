@@ -196,12 +196,54 @@ void Level::makeLevel(int sceneNum) { //Makes the level by placing all the walls
 
 		break;
 
-	case 3:
+	case 3://Not done yet
+		//Surronding walls plus a hole for a door
+		//Xpos1 is supose to go here
+		for (int i = 0; i < 16; ++i) { //Top line of walls 16 wall needed
+			walls[i]->setPos(Vec3(xpos1, 17.0f, 0.0f));
+			xpos1 += 2;
+		}
 
+		for (int i = 16; i < 24; ++i) { //Left line of walls 8 walls needed
+			walls[i]->setPos(Vec3(1.0f, ypos1, 0.0f));
+			ypos1 += 2;
+		}
+
+		for (int i = 24; i < 40; ++i) { //Bottom line of walls 15 wall needed
+			walls[i]->setPos(Vec3(xpos2, 1.0f, 0.0f));
+			xpos2 += 2;
+		}
+
+		for (int i = 40; i < 43; ++i) { //Right bottom under door 3 walls needed
+			walls[i]->setPos(Vec3(31.0f, ypos2, 0.0f));
+			ypos2 += 2;
+		}
 
 		break;
 
-	case 4:
+	case 4: //Not done yet
+		//Surronding walls plus a hole for a door
+		//Xpos1 is supose to go here
+		for (int i = 0; i < 16; ++i) { //Top line of walls 16 wall needed
+			walls[i]->setPos(Vec3(xpos1, 17.0f, 0.0f));
+			xpos1 += 2;
+		}
+
+		for (int i = 16; i < 24; ++i) { //Left line of walls 8 walls needed
+			walls[i]->setPos(Vec3(1.0f, ypos1, 0.0f));
+			ypos1 += 2;
+		}
+
+		for (int i = 24; i < 40; ++i) { //Bottom line of walls 15 wall needed
+			walls[i]->setPos(Vec3(xpos2, 1.0f, 0.0f));
+			xpos2 += 2;
+		}
+
+		for (int i = 40; i < 43; ++i) { //Right bottom under door 3 walls needed
+			walls[i]->setPos(Vec3(31.0f, ypos2, 0.0f));
+			ypos2 += 2;
+		}
+
 
 		break;
 
