@@ -9,6 +9,7 @@
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1,SDL_RENDERER_ACCELERATED);
+	nextS = false;
 }
 
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -234,8 +235,9 @@ void Scene0::Update(const float time) {
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
-	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) {
+	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) { //Load the next scene here
 		player->setPos(Vec3(-wallRight->d - player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
+		nextS = true;
 	}
 	if (Physics::PlaneSphereCollision(*player, *wallTop) == true) {
 		player->setPos(Vec3(player->getPos().x, -wallTop->d - player->getBoundingSphere().r, player->getPos().z));
@@ -549,4 +551,9 @@ void Scene0::Render() {
 bool Scene0::getDead() {
 	if (player->getHealth() <= 0) return true;
 	return false;
+}
+
+
+bool Scene0::nextScene() {
+	return nextS;
 }

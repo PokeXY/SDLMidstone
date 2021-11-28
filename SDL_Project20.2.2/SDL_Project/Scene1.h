@@ -40,6 +40,7 @@ private:
 	Plane* wallTop;
 	Plane* wallBottom;
 	
+	bool nextS;
 
 public:
 	Scene1(SDL_Window* sdlWindow);
@@ -50,6 +51,7 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
+	bool nextScene();
 };
 
 #endif

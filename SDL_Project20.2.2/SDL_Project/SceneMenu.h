@@ -37,6 +37,7 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
+	bool nextScene() { return false; }
 };
 
 #endif

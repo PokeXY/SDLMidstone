@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "Scene0.h"
 #include "Scene1.h"
+#include "Scene2.h"
 #include "SceneD.h"
 #include "SceneMenu.h"
 
@@ -15,7 +16,7 @@ GameManager::GameManager() {
 	currentScene = nullptr;
 
 	//This will keep track of wich scene it is -1 will be the menu and -2 will be death
-	sceneNum = 0;
+	sceneNum = -1;
 }
 
 
@@ -39,7 +40,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 	if (currentScene == nullptr) {
-		currentScene = new Scene0(windowPtr->GetSDL_Window());
+		currentScene = new SceneMenu(windowPtr->GetSDL_Window());
 	}
 
 	if (currentScene == nullptr) {
@@ -150,7 +151,20 @@ void GameManager::Run() {
 			currentScene->OnCreate();
 			sceneNum = -1;
 		}
-
+		if (currentScene->nextScene() && sceneNum == 0) {
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene1(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 1;
+		}
+		else if (currentScene->nextScene() && sceneNum == 1) {
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene2(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 2;
+		}
 
 
 		 
