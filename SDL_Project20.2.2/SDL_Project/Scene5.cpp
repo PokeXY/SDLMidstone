@@ -236,7 +236,6 @@ void Scene5::Update(const float time) {
 	//Load in new scene here
 	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) {
 		player->setPos(Vec3(-wallRight->d - player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
-		nextS = true;
 	}
 	if (Physics::PlaneSphereCollision(*player, *wallTop) == true) {
 		player->setPos(Vec3(player->getPos().x, -wallTop->d - player->getBoundingSphere().r, player->getPos().z));
@@ -548,6 +547,8 @@ bool Scene5::getDead() {
 	return false;
 }
 
-bool Scene5::nextScene() {
-	return nextS;
+bool Scene5::nextScene() { //Check if boss is dead to make win later
+	
+
+
 }
