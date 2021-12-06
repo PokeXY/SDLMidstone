@@ -4,6 +4,9 @@
 #include "Scene0.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include "Scene3.h"
+#include "Scene4.h"
+#include "Scene5.h"
 #include "SceneD.h"
 #include "SceneMenu.h"
 
@@ -40,7 +43,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 	if (currentScene == nullptr) {
-		currentScene = new SceneMenu(windowPtr->GetSDL_Window());
+		currentScene = new Scene4(windowPtr->GetSDL_Window());
 	}
 
 	if (currentScene == nullptr) {
@@ -151,21 +154,41 @@ void GameManager::Run() {
 			currentScene->OnCreate();
 			sceneNum = -1;
 		}
-		if (currentScene->nextScene() && sceneNum == 0) {
+		if (currentScene->nextScene() && sceneNum == 0) { //Goes from scene 0 to scene 1
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene1(windowPtr->GetSDL_Window());
 			currentScene->OnCreate();
 			sceneNum = 1;
 		}
-		else if (currentScene->nextScene() && sceneNum == 1) {
+		else if (currentScene->nextScene() && sceneNum == 1) {//Goes from scene 1 to scene 2
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene2(windowPtr->GetSDL_Window());
 			currentScene->OnCreate();
 			sceneNum = 2;
 		}
-
+		else if (currentScene->nextScene() && sceneNum == 2) {//Goes from scene 2 to scene 3
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene3(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 3;
+		}
+		else if (currentScene->nextScene() && sceneNum == 3) {//Goes from scene 3 to scene 4
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene4(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 4;
+		}
+		else if (currentScene->nextScene() && sceneNum == 4) {//Loads Final scene or boss room, Goes from scene 4 to scene 5
+			currentScene->OnDestroy();
+			delete currentScene;
+			currentScene = new Scene5(windowPtr->GetSDL_Window());
+			currentScene->OnCreate();
+			sceneNum = 5;
+		}
 
 		 
 		currentScene->Update(timer->GetDeltaTime());

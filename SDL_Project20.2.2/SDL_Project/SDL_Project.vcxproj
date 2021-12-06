@@ -27,6 +27,9 @@
     <ClCompile Include="Scene0.cpp" />
     <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
+    <ClCompile Include="Scene3.cpp" />
+    <ClCompile Include="Scene4.cpp" />
+    <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="SceneD.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -53,6 +56,9 @@
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
+    <ClInclude Include="Scene3.h" />
+    <ClInclude Include="Scene4.h" />
+    <ClInclude Include="Scene5.h" />
     <ClInclude Include="SceneD.h" />
     <ClInclude Include="SceneMenu.h" />
     <ClInclude Include="Sphere.h" />
@@ -71,7 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
