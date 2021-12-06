@@ -9,6 +9,7 @@
 #include "Scene5.h"
 #include "SceneD.h"
 #include "SceneMenu.h"
+#include "SceneWin.h"
 
 #include <iostream>
 
@@ -18,7 +19,7 @@ GameManager::GameManager() {
 	isRunning = true;
 	currentScene = nullptr;
 
-	//This will keep track of wich scene it is -1 will be the menu and -2 will be death
+	//This will keep track of wich scene it is -1 will be the menu and -2 will be death -3 will be the win screen
 	sceneNum = -1;
 }
 
@@ -43,7 +44,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 	if (currentScene == nullptr) {
-		currentScene = new Scene4(windowPtr->GetSDL_Window());
+		currentScene = new SceneMenu(windowPtr->GetSDL_Window());
 	}
 
 	if (currentScene == nullptr) {
