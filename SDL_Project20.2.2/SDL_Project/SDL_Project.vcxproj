@@ -32,6 +32,7 @@
     <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="SceneD.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
+    <ClCompile Include="SceneWin.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Scene5.h" />
     <ClInclude Include="SceneD.h" />
     <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="SceneWin.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />

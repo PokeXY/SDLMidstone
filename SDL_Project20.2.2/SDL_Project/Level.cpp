@@ -317,7 +317,7 @@ void Level::makeLevel(int sceneNum) { //Makes the level by placing all the walls
 			xpos1 += 2;
 		}
 
-		for (int i = 16; i < 24; ++i) { //Left line of walls 8 walls needed
+		for (int i = 16; i < 24; ++i) { //Right line of walls 8 walls needed
 			walls[i]->setPos(Vec3(31.0f, ypos1, 0.0f));
 			ypos1 += 2;
 		}
@@ -326,17 +326,12 @@ void Level::makeLevel(int sceneNum) { //Makes the level by placing all the walls
 			walls[i]->setPos(Vec3(xpos2, 1.0f, 0.0f));
 			xpos2 += 2;
 		}
-
-		for (int i = 40; i < 43; ++i) { //Right bottom under door 3 walls needed
-			walls[i]->setPos(Vec3(31.0f, ypos2, 0.0f));
-			ypos2 += 2;
+		ypos1 = 1.0f;
+		for (int i = 40; i < 48; ++i) { //Left line of walls 8 walls needed
+			walls[i]->setPos(Vec3(1.0f, ypos1, 0.0f));
+			ypos1 += 2;
 		}
-
-		ypos2 += 2;
-		for (int i = 43; i < 46; ++i) { //Right upper under door 3 walls needed
-			walls[i]->setPos(Vec3(1.0f, ypos2, 0.0f));
-			ypos2 += 2;
-		}
+		
 
 		break;
 
