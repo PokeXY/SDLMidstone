@@ -139,7 +139,7 @@ bool Scene1::OnCreate() {
 
 	for (int i = 0; i < 4; ++i) {
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.7f - 3.0f * i, 0.0f));//xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
@@ -309,7 +309,7 @@ void Scene1::Update(const float time) {
 	for (int i = 0; i < level->getWallNum(); ++i) {
 		for (int j = 0; j < enemies.size(); ++j) {
 			if (Physics::CircleRectCollision(*enemies[j], *level->getWall(i)) == true) {
-				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);
+				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);//2
 			}
 		}
 
@@ -422,9 +422,9 @@ void Scene1::Render() {
 	for (int i = 0; i < NUMWALL; ++i) {
 		SDL_QueryTexture(level->getWall(i)->getTexture(), nullptr, nullptr, &WallW, &WallH);
 		wallScreenCoords = projectionMatrix * level->getWall(i)->getPos();
-		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;
+		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;//30
 		WallRect.y = static_cast<int> (wallScreenCoords.y) - 40;
-		WallRect.w = 80;
+		WallRect.w = 80;//80
 		WallRect.h = 80;
 		SDL_RenderCopy(renderer, level->getWall(i)->getTexture(), nullptr, &WallRect);
 	}
@@ -437,7 +437,7 @@ void Scene1::Render() {
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemyScreenCoords = projectionMatrix * enemies[i]->getPos();
 		SDL_QueryTexture(enemies[i]->getTexture(), nullptr, nullptr, &enemyW, &enemyH);
-		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);
+		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);//1
 		enemyRect.y = static_cast<int>(enemyScreenCoords.y - enemyH / 2);
 		enemyRect.w = enemyW;
 		enemyRect.h = enemyH;

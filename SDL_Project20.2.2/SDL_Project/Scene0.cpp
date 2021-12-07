@@ -20,7 +20,7 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 bool Scene0::OnCreate() {
 	int w, h;
 	float xAxis = 32.0f;
-	float yAxis = 18.0f;
+	float yAxis = 18.0f;//18
 	float zAxis = 1.0f;
 	SDL_GetWindowSize(window,&w,&h);
 	
@@ -29,7 +29,7 @@ bool Scene0::OnCreate() {
 	projectionMatrix = ndc * ortho;
 
 	//temporary border walls
-	wallLeft = new Plane(Vec3(1.0f, 0.0f, 0.0f), 0.0f);
+	wallLeft = new Plane(Vec3(1.0f, 0.0f, 0.0f), 0.0f);//1.0f, 0.0f, 0.0f), 0.0f
 	wallRight = new Plane(Vec3(-1.0f, 0.0f, 0.0f), xAxis);
 	wallTop = new Plane(Vec3(0.0f, -1.0f, 0.0f), yAxis);
 	wallBottom = new Plane(Vec3(0.0f, 1.0f, 0.0f), 0.0f);
@@ -138,9 +138,9 @@ bool Scene0::OnCreate() {
 
 	SDL_FreeSurface(surfacePtr);
 
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 4; ++i) {//4
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));//(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
@@ -166,7 +166,7 @@ bool Scene0::OnCreate() {
 		boss = new BossCharacter;
 
 
-		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));//xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f
 		boss->setBoundingSphere(Sphere(0.5f));
 		boss->setTexture(texturePtr);
 
@@ -443,7 +443,7 @@ void Scene0::Render() {
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemyScreenCoords = projectionMatrix * enemies[i]->getPos();
 		SDL_QueryTexture(enemies[i]->getTexture(), nullptr, nullptr, &enemyW, &enemyH);
-		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);
+		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);//2
 		enemyRect.y = static_cast<int>(enemyScreenCoords.y - enemyH / 2);
 		enemyRect.w = enemyW;
 		enemyRect.h = enemyH;
