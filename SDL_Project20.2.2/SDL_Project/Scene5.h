@@ -10,6 +10,7 @@
 #include "Bullet.h"
 #include "Plane.h"
 #include "Level.h"
+#include "BossCharacter.h"
 
 using namespace MATH;
 struct MATH::Plane;
@@ -28,6 +29,8 @@ private:
 	SDL_Texture* croutonTexture;
 	SDL_Texture* health;
 	PlayerCharacter* player;
+
+	BossCharacter* boss;
 
 	Level* level;
 

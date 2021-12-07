@@ -25,7 +25,7 @@
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ucrtbased.dll'. 
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\version.dll'. 
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\winmm.dll'. 
-The thread 0x6768 has exited with code 0 (0x0).
+The thread 0x5a08 has exited with code 0 (0x0).
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\SHCore.dll'. 
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\uxtheme.dll'. 
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\msctf.dll'. 
@@ -76,12 +76,14 @@ The thread 0x6768 has exited with code 0 (0x0).
 'SDL_Project.exe' (Win32): Loaded 'C:\GameDev\SDL\dll\libpng16-16.dll'. Module was built without symbols.
 'SDL_Project.exe' (Win32): Loaded 'C:\GameDev\SDL\dll\zlib1.dll'. Module was built without symbols.
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdinfo32.dll'
-The thread 0x5ef0 has exited with code 0 (0x0).
-The thread 0x4644 has exited with code 0 (0x0).
+The thread 0x1d14 has exited with code 0 (0x0).
+The thread 0x5544 has exited with code 0 (0x0).
+The thread 0x9c8 has exited with code 0 (0x0).
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igc32.dll'
-The thread 0x29ac has exited with code 0 (0x0).
-The thread 0x15f8 has exited with code 0 (0x0).
-The thread 0x197c has exited with code 0 (0x0).
+The thread 0x568c has exited with code 0 (0x0).
+The thread 0x60b8 has exited with code 0 (0x0).
+The thread 0x44ac has exited with code 0 (0x0).
+The thread 0x6cb4 has exited with code 0 (0x0).
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\cfgmgr32.dll'
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'
@@ -122,14 +124,63 @@ The thread 0x197c has exited with code 0 (0x0).
 'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdinfo32.dll'. 
 'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igc32.dll'. 
-The thread 0x6a8 has exited with code 0 (0x0).
-The thread 0x33f8 has exited with code 0 (0x0).
-The thread 0x4b08 has exited with code 0 (0x0).
-The thread 0x6c8 has exited with code 0 (0x0).
-The thread 0x3018 has exited with code 0 (0x0).
-The thread 0x3bb8 has exited with code 0 (0x0).
-The thread 0x22d8 has exited with code 0 (0x0).
-The thread 0x3158 has exited with code 0 (0x0).
-The thread 0x4248 has exited with code 0 (0x0).
-The thread 0x2334 has exited with code 0 (0x0).
-The program '[10912] SDL_Project.exe' has exited with code 0 (0x0).
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdinfo32.dll'
+The thread 0x4504 has exited with code 0 (0x0).
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igc32.dll'
+The thread 0x5ff8 has exited with code 0 (0x0).
+The thread 0x13f0 has exited with code 0 (0x0).
+The thread 0x5cd0 has exited with code 0 (0x0).
+The thread 0x5fd4 has exited with code 0 (0x0).
+The thread 0x45c0 has exited with code 0 (0x0).
+The thread 0x2ffc has exited with code 0 (0x0).
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\cfgmgr32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdumdim32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\dwmapi.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ntmarta.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\directxdatabasehelper.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\d3d9.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\d3d9.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\dwmapi.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdumdim32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cfgmgr32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'. 
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\cfgmgr32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cfgmgr32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'. 
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\cfgmgr32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cfgmgr32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'. 
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\cfgmgr32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igd9dxva32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\cfgmgr32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdgmm32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\directxdatabasehelper.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ntmarta.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'. 
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'. 
+'SDL_Project.exe' (Win32): Unloaded 'C:\Windows\SysWOW64\ResourcePolicyClient.dll'
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igdinfo32.dll'. 
+'SDL_Project.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_1d8c0a4a248c0ba9\igc32.dll'. 
+The thread 0x58cc has exited with code 0 (0x0).
+The thread 0x17f4 has exited with code 0 (0x0).
+The thread 0x3148 has exited with code 0 (0x0).
+The thread 0x40fc has exited with code 0 (0x0).
+The thread 0x3990 has exited with code 0 (0x0).
+The thread 0x3d00 has exited with code 0 (0x0).
+The thread 0x4ba0 has exited with code 0 (0x0).
+The thread 0x2f78 has exited with code 0 (0x0).
+The thread 0x323c has exited with code 0 (0x0).
+The thread 0x42c8 has exited with code 0 (0x0).
+The program '[11192] SDL_Project.exe' has exited with code 0 (0x0).

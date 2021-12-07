@@ -146,8 +146,8 @@ bool Scene5::OnCreate() {
 
 
 	//load boss characters
-	//surfacePtr = IMG_Load("Art/flappybird1.png");
-	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
 		std::cerr << "Imgage does not work" << std::endl;
@@ -160,19 +160,19 @@ bool Scene5::OnCreate() {
 
 	SDL_FreeSurface(surfacePtr);
 
-	//for (int i = 0; i < 1; ++i)
-	//{
-	//	//boss = new BossCharacter;
+	for (int i = 0; i < 1; ++i)
+	{
+		boss = new BossCharacter;
 
 
-	//	//boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
-	//	//boss->setBoundingSphere(Sphere(0.5f));
-	//	//boss->setTexture(texturePtr);
+	boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+		boss->setBoundingSphere(Sphere(0.5f));
+		boss->setTexture(texturePtr);
 
 	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
 	//	//boss->setBoundingSphere(Sphere(0.5f));
 	//	//boss->setTexture(texturePtr);
-	//}
+	}
 
 
 	return true;
@@ -185,7 +185,7 @@ void Scene5::OnDestroy() {
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;*/
 	if (player) delete player, player = nullptr;
 	if (level) delete level, level = nullptr;
-	//if (boss) delete boss, boss = nullptr;
+	if (boss) delete boss, boss = nullptr;
 
 
 	/*for (Wall* Wall : walls) {
@@ -221,11 +221,11 @@ void Scene5::Update(const float time) {
 	}
 
 	//Boss Movement
-	//if (boss)
-	//{
-	//	boss->seekPlayer(player->getPos());
-	//	Physics::SimpleNewtonMotion(*boss, time);
-	//}
+	if (boss)
+	{
+		boss->seekPlayer(player->getPos());
+	Physics::SimpleNewtonMotion(*boss, time);
+	}
 
 
 	//Player Hits Edge of Window Walls
@@ -273,7 +273,7 @@ void Scene5::Update(const float time) {
 	}
 
 	// Bullets hit boss
-	/*for (int i = 0; i < bullets.size(); ++i)
+	for (int i = 0; i < bullets.size(); ++i)
 	{
 		if (boss)
 		{
@@ -290,7 +290,7 @@ void Scene5::Update(const float time) {
 			}
 		}
 
-	}*/
+	}
 
 	//Bullet Hits Player
 	for (int i = 0; i < bullets.size(); ++i) {
@@ -317,7 +317,7 @@ void Scene5::Update(const float time) {
 
 	}
 
-	/*for (int i = 0; i < level->getWallNum(); ++i)
+	for (int i = 0; i < level->getWallNum(); ++i)
 	{
 		if (boss)
 		{
@@ -325,7 +325,7 @@ void Scene5::Update(const float time) {
 				Physics::SimpleNewtonMotion(*boss, -2 * time);
 			}
 		}
-	}*/
+	}
 
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
@@ -458,7 +458,7 @@ void Scene5::Render() {
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
 
 	// draw boss
-	/*if (boss)
+	if (boss)
 	{
 		SDL_Rect bossRect;
 		Vec3 bossScreenCoords;
@@ -473,7 +473,7 @@ void Scene5::Render() {
 		bossRect.h = bossH;
 
 		SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
-	}*/
+	}
 
 
 	//SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
