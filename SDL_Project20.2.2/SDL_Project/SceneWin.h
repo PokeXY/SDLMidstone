@@ -22,7 +22,7 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Surface* surfacePtr;
 	SDL_Texture* texturePtr;
-	SDL_Texture* background;
+	int wait;
 	bool pressed;
 
 

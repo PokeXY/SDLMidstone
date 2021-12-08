@@ -150,7 +150,7 @@ void GameManager::Run() {
 			currentScene->OnCreate();
 			sceneNum = 0;
 		}
-		else if (currentScene->getDead() && sceneNum == -2) {
+		else if (currentScene->getDead() && sceneNum <= -2) {
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new SceneMenu(windowPtr->GetSDL_Window());

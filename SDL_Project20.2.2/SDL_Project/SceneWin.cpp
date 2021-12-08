@@ -9,6 +9,7 @@ SceneWin::SceneWin(SDL_Window* sdlWindow_) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	pressed = false;
+	wait = 0;
 }
 
 SceneWin::~SceneWin() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -31,20 +32,6 @@ bool SceneWin::OnCreate() {
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
 	surfacePtr = IMG_Load("Art/WinScreen.png");
-	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (background == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
-
-	surfacePtr = IMG_Load("Art/YouDied.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -60,9 +47,6 @@ bool SceneWin::OnCreate() {
 
 
 
-
-
-
 	return true;
 }
 
@@ -75,10 +59,12 @@ void SceneWin::Update(const float time) {
 }
 
 void SceneWin::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here with the clickety clack
-	if (sdlEvent.type == SDL_KEYDOWN || sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) { //Move you to the menu when you press any key 
-		pressed = true;
+	if (wait > 20) {
+		if (sdlEvent.type == SDL_KEYDOWN || sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) { //Move you to the menu when you press any key 
+			pressed = true;
+		}
 	}
-
+	wait++;
 }
 
 void SceneWin::Render() {
@@ -88,12 +74,12 @@ void SceneWin::Render() {
 	SDL_RenderClear(renderer);
 
 
-	SDL_Rect youDied;
-	youDied.x = 310;
-	youDied.y = 0;
-	youDied.w = 720;
-	youDied.h = 720;
-	SDL_RenderCopy(renderer, texturePtr, nullptr, &youDied);
+	SDL_Rect youWin;
+	youWin.x = 310;
+	youWin.y = 0;
+	youWin.w = 720;
+	youWin.h = 720;
+	SDL_RenderCopy(renderer, texturePtr, nullptr, &youWin);
 
 
 	//Update screen

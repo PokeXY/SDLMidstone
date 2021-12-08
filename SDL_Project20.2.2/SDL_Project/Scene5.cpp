@@ -548,7 +548,6 @@ bool Scene5::getDead() {
 }
 
 bool Scene5::nextScene() { //Check if boss is dead to make win later
-	
-	return false;
-
+	if (boss || enemies.size() > 0) return false;
+	return true;
 }
