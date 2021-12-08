@@ -35,7 +35,7 @@ bool Scene5::OnCreate() {
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
-	surfacePtr = IMG_Load("Art/grass256.png");
+	surfacePtr = IMG_Load("Art/grassnoflower256.png");
 	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
