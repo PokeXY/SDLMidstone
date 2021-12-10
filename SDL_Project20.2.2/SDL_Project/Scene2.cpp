@@ -147,33 +147,33 @@ bool Scene2::OnCreate() {
 
 
 	//load boss characters
-	surfacePtr = IMG_Load("Art/flappybird1.png");
-	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	//surfacePtr = IMG_Load("Art/flappybird1.png");
+	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (texturePtr == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
+	//if (surfacePtr == nullptr) {
+	//	std::cerr << "Imgage does not work" << std::endl;
+	//	return false;
+	//}
+	//if (texturePtr == nullptr) {
+	//	printf("%s\n", SDL_GetError());
+	//	return false;
+	//}
 
-	SDL_FreeSurface(surfacePtr);
+	//SDL_FreeSurface(surfacePtr);
 
-	for (int i = 0; i < 1; ++i)
-	{
-		boss = new BossCharacter;
+	//for (int i = 0; i < 1; ++i)
+	//{
+	//	boss = new BossCharacter;
 
 
-		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
-		boss->setBoundingSphere(Sphere(0.5f));
-		boss->setTexture(texturePtr);
+	//	boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+	//	boss->setBoundingSphere(Sphere(0.5f));
+	//	boss->setTexture(texturePtr);
 
-		//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
-		//boss->setBoundingSphere(Sphere(0.5f));
-		//boss->setTexture(texturePtr);
-	}
+	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
+	//	//boss->setBoundingSphere(Sphere(0.5f));
+	//	//boss->setTexture(texturePtr);
+	//}
 
 
 	return true;
@@ -186,7 +186,7 @@ void Scene2::OnDestroy() {
 	if (croutonTexture) delete croutonTexture, croutonTexture = nullptr;*/
 	if (player) delete player, player = nullptr;
 	if (level) delete level, level = nullptr;
-	if (boss) delete boss, boss = nullptr;
+	//if (boss) delete boss, boss = nullptr;
 	//if (health) delete health , health = nullptr;;
 
 
@@ -223,11 +223,11 @@ void Scene2::Update(const float time) {
 	}
 
 	//Boss Movement
-	if (boss)
-	{
-		boss->seekPlayer(player->getPos());
-		Physics::SimpleNewtonMotion(*boss, time);
-	}
+	//if (boss)
+	//{
+	//	boss->seekPlayer(player->getPos());
+	//	Physics::SimpleNewtonMotion(*boss, time);
+	//}
 
 
 	//Player Hits Edge of Window Walls
@@ -274,25 +274,25 @@ void Scene2::Update(const float time) {
 
 	}
 
-	// Bullets hit boss
-	for (int i = 0; i < bullets.size(); ++i)
-	{
-		if (boss)
-		{
-			if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
-				bullets.erase(bullets.begin() + i);
-				boss->takeDamage(1.0f);
-				if (boss->getHealth() <= 0)
-				{
-					delete boss; boss = nullptr;
-				}
+	//// Bullets hit boss
+	//for (int i = 0; i < bullets.size(); ++i)
+	//{
+	//	if (boss)
+	//	{
+	//		if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
+	//			bullets.erase(bullets.begin() + i);
+	//			boss->takeDamage(1.0f);
+	//			if (boss->getHealth() <= 0)
+	//			{
+	//				delete boss; boss = nullptr;
+	//			}
 
-				break;
+	//			break;
 
-			}
-		}
+	//		}
+	//	}
 
-	}
+	//}
 
 	//Bullet Hits Player
 	for (int i = 0; i < bullets.size(); ++i) {
@@ -464,23 +464,23 @@ void Scene2::Render() {
 	playerRect.h = playerH * 2;
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
 
-	// draw boss
-	if (boss)
-	{
-		SDL_Rect bossRect;
-		Vec3 bossScreenCoords;
-		int bossW, bossH;
+	//// draw boss
+	//if (boss)
+	//{
+	//	SDL_Rect bossRect;
+	//	Vec3 bossScreenCoords;
+	//	int bossW, bossH;
 
 
-		bossScreenCoords = projectionMatrix * boss->getPos();
-		SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
-		bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
-		bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
-		bossRect.w = bossW;
-		bossRect.h = bossH;
+	//	bossScreenCoords = projectionMatrix * boss->getPos();
+	//	SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+	//	bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
+	//	bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
+	//	bossRect.w = bossW;
+	//	bossRect.h = bossH;
 
-		SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
-	}
+	//	SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
+	//}
 
 
 	//SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);

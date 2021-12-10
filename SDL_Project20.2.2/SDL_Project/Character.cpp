@@ -4,7 +4,7 @@ void Character::dead()
 {
 }
 
-Character::Character() : health(3), maxHealth(3), isActive(0), isVisible(0)
+Character::Character() : health(3.0f), maxHealth(3.0f), isActive(0), isVisible(0)
 {
 }
 

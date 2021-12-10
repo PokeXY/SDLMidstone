@@ -6,7 +6,7 @@
 class Character : public GameObject
 {
 protected:
-	int health, maxHealth;
+	float health, maxHealth;
 	bool isVisible, isActive;
 	float moveSpeed = 4.0f;
 
@@ -18,7 +18,7 @@ public:
 
 	void takeDamage(float damageAmount_);
 
-	int getHealth() { return health; }
+	float getHealth() { return health; }
 };
 
 #endif

@@ -147,7 +147,7 @@ bool Scene0::OnCreate() {
 	
 
 	//load boss characters
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/breadmachine-export.gif");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -167,9 +167,8 @@ bool Scene0::OnCreate() {
 
 
 		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));//xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f
-		boss->setBoundingSphere(Sphere(0.5f));
+		boss->setBoundingSphere(Sphere(1.0f));
 		boss->setTexture(texturePtr);
-
 			//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
 			//boss->setBoundingSphere(Sphere(0.5f));
 			//boss->setTexture(texturePtr);
@@ -226,7 +225,7 @@ void Scene0::Update(const float time) {
 	if (boss)
 	{
 		boss->seekPlayer(player->getPos());
-		Physics::SimpleNewtonMotion(*boss, time);
+		Physics::SimpleNewtonMotion(*boss, time/2);
 	}
 
 
@@ -274,25 +273,25 @@ void Scene0::Update(const float time) {
 
 	}
 
-	// Bullets hit boss
-	for (int i = 0; i < bullets.size(); ++i)
-	{
-		if (boss)
-		{
-			if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
-				bullets.erase(bullets.begin() + i);
-				boss->takeDamage(1.0f);
-				if (boss->getHealth() <= 0)
-				{
-					delete boss; boss = nullptr;
-				}
+	//// Bullets hit boss
+	//for (int i = 0; i < bullets.size(); ++i)
+	//{
+	//	if (boss)
+	//	{
+	//		if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
+	//			bullets.erase(bullets.begin() + i);
+	//			boss->takeDamage(0.25f);
+	//			if (boss->getHealth() <= 0)
+	//			{
+	//				delete boss; boss = nullptr;
+	//			}
 
-				break;
+	//			break;
 
-			}
-		}
+	//		}
+	//	}
 
-	}
+	//}
 
 	//Bullet Hits Player
 	for (int i = 0; i < bullets.size(); ++i) {
@@ -319,15 +318,15 @@ void Scene0::Update(const float time) {
 
 	}
 
-	for (int i = 0; i < level->getWallNum(); ++i)
-	{
-		if (boss)
-		{
-			if (Physics::CircleRectCollision(*boss, *level->getWall(i)) == true) {
-				Physics::SimpleNewtonMotion(*boss, -2 * time);
-			}
-		}
-	}
+	//for (int i = 0; i < level->getWallNum(); ++i)
+	//{
+	//	if (boss)
+	//	{
+	//		if (Physics::CircleRectCollision(*boss, *level->getWall(i)) == true) {
+	//			Physics::SimpleNewtonMotion(*boss, -2 * time);
+	//		}
+	//	}
+	//}
 
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
@@ -465,22 +464,22 @@ void Scene0::Render() {
 	SDL_RenderCopyEx(renderer, player->getTexture(), nullptr, &playerRect, player->getAngle(), nullptr, SDL_FLIP_NONE);
 
 	// draw boss
-	if (boss)
-	{
-		SDL_Rect bossRect;
-		Vec3 bossScreenCoords;
-		int bossW, bossH;
+	//if (boss)
+	//{
+	//	SDL_Rect bossRect;
+	//	Vec3 bossScreenCoords;
+	//	int bossW, bossH;
 
 
-		bossScreenCoords = projectionMatrix * boss->getPos();
-		SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
-		bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
-		bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
-		bossRect.w = bossW;
-		bossRect.h = bossH;
+	//	bossScreenCoords = projectionMatrix * boss->getPos();
+	//	SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
+	//	bossRect.x = static_cast<int>(bossScreenCoords.x - bossW / 2);
+	//	bossRect.y = static_cast<int>(bossScreenCoords.y - bossH / 2);
+	//	bossRect.w = bossW;
+	//	bossRect.h = bossH;
 
-		SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
-	}
+	//	SDL_RenderCopy(renderer, boss->getTexture(), nullptr, &bossRect);
+	//}
 
 
 	//SDL_QueryTexture(boss->getTexture(), nullptr, nullptr, &bossW, &bossH);
