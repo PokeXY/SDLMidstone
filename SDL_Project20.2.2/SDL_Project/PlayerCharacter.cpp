@@ -86,7 +86,8 @@ void PlayerCharacter::dead() {
 };
 
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
-	if (sdlEvent.type == SDL_KEYDOWN) {
+	if (sdlEvent.type == SDL_KEYDOWN) {\
+		//Movement
 		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
 			vel.y = moveSpeed;
 		}
@@ -98,6 +99,15 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 		}
 		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
 			vel.x = moveSpeed;
+		}
+		//WeaponSwitch
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_1) {
+			weaponType = 0;
+		}
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_2) {
+			if (altWeaponAvailable == true) {
+				weaponType = 1;
+			}
 		}
 	}
 
@@ -123,40 +133,6 @@ void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 proj
 			}
 		}
 	}
-
-	/*
-	if (sdlEvent.type == SDL_KEYDOWN) {
-
-		switch (sdlEvent.key.keysym.scancode) {
-
-			case SDL_SCANCODE_W:
-				//pos.y += moveSpeed;
-				vel = Vec3(0.0f, moveSpeed, 0.0f);
-				break;
-
-			case SDL_SCANCODE_A:
-				//pos.x += -moveSpeed;
-				vel = Vec3(-moveSpeed, 0.0f, 0.0f);
-				break;
-
-			case SDL_SCANCODE_S:
-				//pos.y += -moveSpeed;
-				vel = Vec3(0.0f, -moveSpeed, 0.0f);
-				break;
-
-			case SDL_SCANCODE_D:
-				//pos.x += moveSpeed;
-				vel = Vec3(moveSpeed, 0.0f, 0.0f);
-				break;
-
-			default:
-				break;
-		}
-	}
-
-	if (sdlEvent.type == SDL_KEYUP) {
-		vel = Vec3(0.0f);
-	}*/
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEMOTION) {
 		Vec3 mousePosView = Vec3(sdlEvent.button.x, sdlEvent.button.y, 0.0f);
