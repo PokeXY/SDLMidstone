@@ -9,6 +9,7 @@
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1,SDL_RENDERER_ACCELERATED);
+	nextS = false;
 }
 
 Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -19,7 +20,7 @@ Scene0::~Scene0(){// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 bool Scene0::OnCreate() {
 	int w, h;
 	float xAxis = 32.0f;
-	float yAxis = 18.0f;
+	float yAxis = 18.0f;//18
 	float zAxis = 1.0f;
 	SDL_GetWindowSize(window,&w,&h);
 	
@@ -28,14 +29,14 @@ bool Scene0::OnCreate() {
 	projectionMatrix = ndc * ortho;
 
 	//temporary border walls
-	wallLeft = new Plane(Vec3(1.0f, 0.0f, 0.0f), 0.0f);
+	wallLeft = new Plane(Vec3(1.0f, 0.0f, 0.0f), 0.0f);//1.0f, 0.0f, 0.0f), 0.0f
 	wallRight = new Plane(Vec3(-1.0f, 0.0f, 0.0f), xAxis);
 	wallTop = new Plane(Vec3(0.0f, -1.0f, 0.0f), yAxis);
 	wallBottom = new Plane(Vec3(0.0f, 1.0f, 0.0f), 0.0f);
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
-	surfacePtr = IMG_Load("Art/bgSample.png");
+	surfacePtr = IMG_Load("Art/grassnoflower256.png");
 	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 	
 	if (surfacePtr == nullptr) {
@@ -121,35 +122,6 @@ bool Scene0::OnCreate() {
 	
 	SDL_FreeSurface(surfacePtr);
 
-	//character health1
-	surfacePtr = IMG_Load("Art/BreadHealth.png");
-	health1 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (health1 == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
-
-	//character health2
-	surfacePtr = IMG_Load("Art/BreadHealth.png");
-	health2 = SDL_CreateTextureFromSurface(renderer, surfacePtr);
-
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (health2 == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
 
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
@@ -166,9 +138,9 @@ bool Scene0::OnCreate() {
 
 	SDL_FreeSurface(surfacePtr);
 
-	for (int i = 0; i < 4; ++i) {
+	for (int i = 0; i < 4; ++i) {//4
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));//(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
@@ -194,7 +166,7 @@ bool Scene0::OnCreate() {
 		boss = new BossCharacter;
 
 
-		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));//xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f
 		boss->setBoundingSphere(Sphere(0.5f));
 		boss->setTexture(texturePtr);
 
@@ -263,8 +235,9 @@ void Scene0::Update(const float time) {
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
-	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) {
+	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) { //Load the next scene here
 		player->setPos(Vec3(-wallRight->d - player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
+		nextS = true;
 	}
 	if (Physics::PlaneSphereCollision(*player, *wallTop) == true) {
 		player->setPos(Vec3(player->getPos().x, -wallTop->d - player->getBoundingSphere().r, player->getPos().z));
@@ -470,7 +443,7 @@ void Scene0::Render() {
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemyScreenCoords = projectionMatrix * enemies[i]->getPos();
 		SDL_QueryTexture(enemies[i]->getTexture(), nullptr, nullptr, &enemyW, &enemyH);
-		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);
+		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);//2
 		enemyRect.y = static_cast<int>(enemyScreenCoords.y - enemyH / 2);
 		enemyRect.w = enemyW;
 		enemyRect.h = enemyH;
@@ -534,34 +507,42 @@ void Scene0::Render() {
 
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
 	}
-	
-	
-	SDL_Rect healthRect;
-	
-	healthRect.x = 10;
-	healthRect.y = 0;
-	healthRect.w = 50;
-	healthRect.h = 50;
-	SDL_RenderCopy(renderer, health, nullptr, &healthRect);
-	
-	SDL_Rect health1Rect;
+	if (player->getHealth() > 0)
+	{
+		SDL_Rect healthRect;
 
-	health1Rect.x = 20;
-	health1Rect.y = 0;
-	health1Rect.w = 50;
-	health1Rect.h = 50;
-	SDL_RenderCopy(renderer, health1, nullptr, &health1Rect);
+		healthRect.x = 10;
+		healthRect.y = 0;
+		healthRect.w = 100;
+		healthRect.h = 100;
+		SDL_RenderCopy(renderer, health, nullptr, &healthRect);
 
-	SDL_Rect health2Rect;
+		if (player->getHealth() > 1)
+		{
+			SDL_Rect health1Rect;
 
-	health2Rect.x = 30;
-	health2Rect.y = 0;
-	health2Rect.w = 50;
-	health2Rect.h = 50;
-	SDL_RenderCopy(renderer, health2, nullptr, &health2Rect);
+			health1Rect.x = 40;
+			health1Rect.y = 0;
+			health1Rect.w = 100;
+			health1Rect.h = 100;
+			SDL_RenderCopy(renderer, health, nullptr, &health1Rect);
 
+			if (player->getHealth() > 2)
+			{
+				SDL_Rect health2Rect;
+
+				health2Rect.x = 70;
+				health2Rect.y = 0;
+				health2Rect.w = 100;
+				health2Rect.h = 100;
+				SDL_RenderCopy(renderer, health, nullptr, &health2Rect);
+			}
+		}
+	}
 	//Update screen
 	SDL_RenderPresent(renderer);
+
+
 
 	
 }
@@ -570,4 +551,9 @@ void Scene0::Render() {
 bool Scene0::getDead() {
 	if (player->getHealth() <= 0) return true;
 	return false;
+}
+
+
+bool Scene0::nextScene() {
+	return nextS;
 }

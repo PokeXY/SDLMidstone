@@ -15,7 +15,7 @@ using namespace MATH;
 struct MATH::Plane;
 
 //Numbers of walls 
-#define NUMWALL 78
+#define NUMWALL 78//78
 
 class Scene1 : public Scene {
 private:
@@ -26,6 +26,7 @@ private:
 	SDL_Texture* texturePtr;
 	SDL_Texture* background;
 	SDL_Texture* croutonTexture;
+	SDL_Texture* health;
 	PlayerCharacter* player;
 
 	Level* level;
@@ -39,6 +40,7 @@ private:
 	Plane* wallTop;
 	Plane* wallBottom;
 	
+	bool nextS;
 
 public:
 	Scene1(SDL_Window* sdlWindow);
@@ -49,6 +51,7 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
+	bool nextScene();
 };
 
 #endif

@@ -26,8 +26,13 @@
     <ClCompile Include="Randomizer.cpp" />
     <ClCompile Include="Scene0.cpp" />
     <ClCompile Include="Scene1.cpp" />
+    <ClCompile Include="Scene2.cpp" />
+    <ClCompile Include="Scene3.cpp" />
+    <ClCompile Include="Scene4.cpp" />
+    <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="SceneD.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
+    <ClCompile Include="SceneWin.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -51,8 +56,13 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene1.h" />
+    <ClInclude Include="Scene2.h" />
+    <ClInclude Include="Scene3.h" />
+    <ClInclude Include="Scene4.h" />
+    <ClInclude Include="Scene5.h" />
     <ClInclude Include="SceneD.h" />
     <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="SceneWin.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vector.h" />

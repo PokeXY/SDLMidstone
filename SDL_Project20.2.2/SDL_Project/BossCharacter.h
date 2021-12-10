@@ -11,7 +11,9 @@ public:
 	BossCharacter();
 	~BossCharacter();
 
-	//void seekPlayer(Vec3 playerLocation_);
+	void seekPlayer(Vec3 playerLocation_);
+
+	
 };
 
 #endif

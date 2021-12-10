@@ -29,13 +29,13 @@ private:
 	SDL_Texture* background;
 	SDL_Texture* croutonTexture;
 	SDL_Texture* health;
-	SDL_Texture* health1;
-	SDL_Texture* health2;
+	//SDL_Texture* health1;
+	//SDL_Texture* health2;
 
 	PlayerCharacter* player;
 	BossCharacter* boss;
 
-	//Health* health; // if need to create a health class
+
 
 	Level* level;
 
@@ -50,7 +50,7 @@ private:
 	Plane* wallTop; 
 	Plane* wallBottom;
 
-	
+	bool nextS;
 
 public:
 	Scene0(SDL_Window* sdlWindow);
@@ -61,6 +61,7 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event &sdlEvent );
 	bool getDead();
+	bool nextScene();
 	
 };
 

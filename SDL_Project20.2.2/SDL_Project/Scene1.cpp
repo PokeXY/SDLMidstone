@@ -8,6 +8,7 @@
 Scene1::Scene1(SDL_Window* sdlWindow_) {
 	window = sdlWindow_;
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	nextS = false;
 }
 
 Scene1::~Scene1() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
@@ -34,7 +35,7 @@ bool Scene1::OnCreate() {
 
 	IMG_Init(IMG_INIT_PNG); //Make loading PNGs easer so only use PNGs
 	//Load the Back ground image and set the texture as well
-	surfacePtr = IMG_Load("Art/bgSample.png");
+	surfacePtr = IMG_Load("Art/grassnoflower256.png");
 	background = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -105,6 +106,22 @@ bool Scene1::OnCreate() {
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
+	//character health
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	health = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (health == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+
+	SDL_FreeSurface(surfacePtr);
+
+
 	//load enemy characters
 	surfacePtr = IMG_Load("Art/The Unbread.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
@@ -122,7 +139,7 @@ bool Scene1::OnCreate() {
 
 	for (int i = 0; i < 4; ++i) {
 		enemies.push_back(new EnemyCharacter());
-		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f));
+		enemies[i]->setPos(Vec3(xAxis - 3.0f, yAxis - 4.7f - 3.0f * i, 0.0f));//xAxis - 3.0f, yAxis - 4.0f - 3.0f * i, 0.0f
 		enemies[i]->setBoundingSphere(Sphere(0.5f));
 		enemies[i]->setTexture(texturePtr);
 	}
@@ -216,8 +233,10 @@ void Scene1::Update(const float time) {
 	if (Physics::PlaneSphereCollision(*player, *wallLeft) == true) {
 		player->setPos(Vec3(player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
 	}
+	//Load in new scene here
 	if (Physics::PlaneSphereCollision(*player, *wallRight) == true) {
 		player->setPos(Vec3(-wallRight->d - player->getBoundingSphere().r, player->getPos().y, player->getPos().z));
+		nextS = true;
 	}
 	if (Physics::PlaneSphereCollision(*player, *wallTop) == true) {
 		player->setPos(Vec3(player->getPos().x, -wallTop->d - player->getBoundingSphere().r, player->getPos().z));
@@ -290,7 +309,7 @@ void Scene1::Update(const float time) {
 	for (int i = 0; i < level->getWallNum(); ++i) {
 		for (int j = 0; j < enemies.size(); ++j) {
 			if (Physics::CircleRectCollision(*enemies[j], *level->getWall(i)) == true) {
-				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);
+				Physics::SimpleNewtonMotion(*enemies[j], -2 * time);//2
 			}
 		}
 
@@ -403,9 +422,9 @@ void Scene1::Render() {
 	for (int i = 0; i < NUMWALL; ++i) {
 		SDL_QueryTexture(level->getWall(i)->getTexture(), nullptr, nullptr, &WallW, &WallH);
 		wallScreenCoords = projectionMatrix * level->getWall(i)->getPos();
-		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;
+		WallRect.x = static_cast<int> (wallScreenCoords.x) - 40;//30
 		WallRect.y = static_cast<int> (wallScreenCoords.y) - 40;
-		WallRect.w = 80;
+		WallRect.w = 80;//80
 		WallRect.h = 80;
 		SDL_RenderCopy(renderer, level->getWall(i)->getTexture(), nullptr, &WallRect);
 	}
@@ -418,7 +437,7 @@ void Scene1::Render() {
 	for (int i = 0; i < enemies.size(); ++i) {
 		enemyScreenCoords = projectionMatrix * enemies[i]->getPos();
 		SDL_QueryTexture(enemies[i]->getTexture(), nullptr, nullptr, &enemyW, &enemyH);
-		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);
+		enemyRect.x = static_cast<int>(enemyScreenCoords.x - enemyW / 2);//1
 		enemyRect.y = static_cast<int>(enemyScreenCoords.y - enemyH / 2);
 		enemyRect.w = enemyW;
 		enemyRect.h = enemyH;
@@ -483,6 +502,40 @@ void Scene1::Render() {
 		SDL_RenderCopy(renderer, bullets[i]->getTexture(), nullptr, &bulletRect);
 	}
 
+
+	if (player->getHealth() > 0)
+	{
+		SDL_Rect healthRect;
+
+		healthRect.x = 10;
+		healthRect.y = 0;
+		healthRect.w = 100;
+		healthRect.h = 100;
+		SDL_RenderCopy(renderer, health, nullptr, &healthRect);
+
+		if (player->getHealth() > 1)
+		{
+			SDL_Rect health1Rect;
+
+			health1Rect.x = 40;
+			health1Rect.y = 0;
+			health1Rect.w = 100;
+			health1Rect.h = 100;
+			SDL_RenderCopy(renderer, health, nullptr, &health1Rect);
+
+			if (player->getHealth() > 2)
+			{
+				SDL_Rect health2Rect;
+
+				health2Rect.x = 70;
+				health2Rect.y = 0;
+				health2Rect.w = 100;
+				health2Rect.h = 100;
+				SDL_RenderCopy(renderer, health, nullptr, &health2Rect);
+			}
+		}
+	}
+
 	//Update screen
 	SDL_RenderPresent(renderer);
 
@@ -493,4 +546,8 @@ void Scene1::Render() {
 bool Scene1::getDead() {
 	if (player->getHealth() <= 0) return true;
 	return false;
+}
+
+bool Scene1::nextScene() {
+	return nextS;
 }

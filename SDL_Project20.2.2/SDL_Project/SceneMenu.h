@@ -9,8 +9,7 @@
 #include "EnemyCharacter.h"
 #include "Bullet.h"
 #include "Plane.h"
-#include "Level.h"
-#include "BossCharacter.h"
+
 
 using namespace MATH;
 struct MATH::Plane;
@@ -22,6 +21,8 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Surface* surfacePtr;
 	SDL_Texture* texturePtr;
+
+	GameObject* player; //Not the player just a a guy jumping around the screen 
 
 	bool play;
 
@@ -36,6 +37,7 @@ public:
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
+	bool nextScene() { return false; }
 };
 
 #endif

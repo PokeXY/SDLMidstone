@@ -71,6 +71,13 @@ void SceneMenu::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen he
 		play = true;
 
 	}
+	//This is the exit button which will exit and quit the game
+	else if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN  && 12 < mousePosWorld.x && mousePosWorld.x < 19 && 2.5 < mousePosWorld.y && mousePosWorld.y < 5) {
+		std::cout << mousePosWorld.x << "  ,  " << mousePosWorld.y << std::endl;
+		SDL_Event sdlevent;
+		sdlevent.type = SDL_QUIT;
+		SDL_PushEvent(&sdlevent);
+	}
 	
 }
 
