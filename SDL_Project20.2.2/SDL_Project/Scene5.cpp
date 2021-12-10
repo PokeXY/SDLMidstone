@@ -146,7 +146,7 @@ bool Scene5::OnCreate() {
 
 
 	//load boss characters
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/breadmachine-export.gif");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -166,7 +166,7 @@ bool Scene5::OnCreate() {
 
 
 	boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
-		boss->setBoundingSphere(Sphere(0.5f));
+		boss->setBoundingSphere(Sphere(1.0f));
 		boss->setTexture(texturePtr);
 
 	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
@@ -224,7 +224,7 @@ void Scene5::Update(const float time) {
 	if (boss)
 	{
 		boss->seekPlayer(player->getPos());
-	Physics::SimpleNewtonMotion(*boss, time);
+	Physics::SimpleNewtonMotion(*boss, time/1.5);
 	}
 
 
@@ -279,7 +279,7 @@ void Scene5::Update(const float time) {
 		{
 			if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
 				bullets.erase(bullets.begin() + i);
-				boss->takeDamage(1.0f);
+				boss->takeDamage(0.25f);
 				if (boss->getHealth() <= 0)
 				{
 					delete boss; boss = nullptr;
