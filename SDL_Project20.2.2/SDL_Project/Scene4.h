@@ -29,6 +29,9 @@ private:
 	SDL_Texture* health;
 	PlayerCharacter* player;
 
+	GameObject* healthPickup;
+	GameObject* weaponPickup;
+
 	Level* level;
 
 	//std::vector<Wall*> walls;

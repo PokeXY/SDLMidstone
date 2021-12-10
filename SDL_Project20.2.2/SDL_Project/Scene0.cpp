@@ -176,7 +176,7 @@ bool Scene0::OnCreate() {
 
 	//load collectibles
 	//health pickup
-	surfacePtr = IMG_Load("Art/flappybird1.png");
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
 	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
 	if (surfacePtr == nullptr) {
@@ -196,24 +196,24 @@ bool Scene0::OnCreate() {
 	healthPickup->setTexture(texturePtr);
 
 	//weapon pickup
-	surfacePtr = IMG_Load("Art/flappybird1.png");
-	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	//surfacePtr = IMG_Load("Art/Shotgun96.png");
+	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (texturePtr == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-	weaponPickup = new GameObject();
+	//if (surfacePtr == nullptr) {
+	//	std::cerr << "Imgage does not work" << std::endl;
+	//	return false;
+	//}
+	//if (texturePtr == nullptr) {
+	//	printf("%s\n", SDL_GetError());
+	//	return false;
+	//}
+	//weaponPickup = new GameObject();
 
-	SDL_FreeSurface(surfacePtr);
+	//SDL_FreeSurface(surfacePtr);
 
-	weaponPickup->setPos(Vec3(16.0f, 12.0f, 0.0f));
-	weaponPickup->setBoundingSphere(Sphere(0.5f));
-	weaponPickup->setTexture(texturePtr);
+	//weaponPickup->setPos(Vec3(16.0f, 12.0f, 0.0f));
+	//weaponPickup->setBoundingSphere(Sphere(0.5f));
+	//weaponPickup->setTexture(texturePtr);
 
 	return true;
 }
@@ -387,6 +387,8 @@ void Scene0::Update(const float time) {
 	//		}
 	//	}
 	//}
+
+
 
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
@@ -610,10 +612,10 @@ void Scene0::Render() {
 	if (healthPickup) {
 		SDL_QueryTexture(healthPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
 		healthPickupScreenCoords = projectionMatrix * healthPickup->getPos();
-		collectibleRect.x = static_cast<int>(healthPickupScreenCoords.x) - collectibleW / 4;
-		collectibleRect.y = static_cast<int>(healthPickupScreenCoords.y) - collectibleH / 4;
-		collectibleRect.w = collectibleW / 2;
-		collectibleRect.h = collectibleH / 2;
+		collectibleRect.x = static_cast<int>(healthPickupScreenCoords.x) - collectibleW / 8;
+		collectibleRect.y = static_cast<int>(healthPickupScreenCoords.y) - collectibleH / 8;
+		collectibleRect.w = collectibleW / 4;
+		collectibleRect.h = collectibleH / 4;
 		SDL_RenderCopy(renderer, healthPickup->getTexture(), nullptr, &collectibleRect);
 	}
 

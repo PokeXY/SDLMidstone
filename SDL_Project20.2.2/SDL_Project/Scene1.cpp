@@ -144,6 +144,26 @@ bool Scene1::OnCreate() {
 		enemies[i]->setTexture(texturePtr);
 	}
 
+	//weapon pickup
+	surfacePtr = IMG_Load("Art/Shotgun96.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	weaponPickup = new GameObject();
+
+	SDL_FreeSurface(surfacePtr);
+
+	weaponPickup->setPos(Vec3(3.0f, 13.0f, 0.0f));
+	weaponPickup->setBoundingSphere(Sphere(0.5f));
+	weaponPickup->setTexture(texturePtr);
+
 
 	//load boss characters
 	//surfacePtr = IMG_Load("Art/flappybird1.png");
@@ -226,6 +246,16 @@ void Scene1::Update(const float time) {
 	//	boss->seekPlayer(player->getPos());
 	//	Physics::SimpleNewtonMotion(*boss, time);
 	//}
+
+	//player hits weapon
+	if (weaponPickup) {
+		if (Physics::SphereSphereCollision(*player, *weaponPickup) == true) {
+			player->setAltWeaponAvailable(true);
+			player->setWeaponType(1);
+			delete weaponPickup;
+			weaponPickup = nullptr;
+		}
+	}
 
 
 	//Player Hits Edge of Window Walls
@@ -536,6 +566,20 @@ void Scene1::Render() {
 				SDL_RenderCopy(renderer, health, nullptr, &health2Rect);
 			}
 		}
+	}
+
+	SDL_Rect collectibleRect;
+	Vec3 weaponPickupScreenCoords;
+	int collectibleW, collectibleH;
+
+	if (weaponPickup) {
+		SDL_QueryTexture(weaponPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		weaponPickupScreenCoords = projectionMatrix * weaponPickup->getPos();
+		collectibleRect.x = static_cast<int>(weaponPickupScreenCoords.x) - collectibleW / 4;
+		collectibleRect.y = static_cast<int>(weaponPickupScreenCoords.y) - collectibleH / 4;
+		collectibleRect.w = collectibleW / 2;
+		collectibleRect.h = collectibleH / 2;
+		SDL_RenderCopy(renderer, weaponPickup->getTexture(), nullptr, &collectibleRect);
 	}
 
 	//Update screen

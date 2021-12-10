@@ -165,8 +165,8 @@ bool Scene5::OnCreate() {
 		boss = new BossCharacter;
 
 
-	boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
-		boss->setBoundingSphere(Sphere(1.0f));
+		boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
+		boss->setBoundingSphere(Sphere(1.2f));
 		boss->setTexture(texturePtr);
 
 	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
@@ -174,6 +174,47 @@ bool Scene5::OnCreate() {
 	//	//boss->setTexture(texturePtr);
 	}
 
+
+	//load collectibles
+	//health pickup
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	healthPickup = new GameObject();
+
+	SDL_FreeSurface(surfacePtr);
+
+	healthPickup->setPos(Vec3(5.0f, 14.0f, 0.0f));
+	healthPickup->setBoundingSphere(Sphere(0.5f));
+	healthPickup->setTexture(texturePtr);
+
+	//weapon pickup
+	surfacePtr = IMG_Load("Art/Shotgun96.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	weaponPickup = new GameObject();
+
+	SDL_FreeSurface(surfacePtr);
+
+	weaponPickup->setPos(Vec3(5.0f, 5.0f, 0.0f));
+	weaponPickup->setBoundingSphere(Sphere(0.5f));
+	weaponPickup->setTexture(texturePtr);
 
 	return true;
 }
@@ -224,7 +265,7 @@ void Scene5::Update(const float time) {
 	if (boss)
 	{
 		boss->seekPlayer(player->getPos());
-	Physics::SimpleNewtonMotion(*boss, time/1.5);
+		Physics::SimpleNewtonMotion(*boss, time/1.5);
 	}
 
 
@@ -255,6 +296,25 @@ void Scene5::Update(const float time) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
 	}
 
+	//Player Hits Collectibles
+	if (healthPickup) {
+		if (Physics::SphereSphereCollision(*player, *healthPickup) == true) {
+			if (player->restoreHealth(1.0f) == true) {
+				delete healthPickup;
+				healthPickup = nullptr;
+			}
+		}
+	}
+
+	if (weaponPickup) {
+		if (Physics::SphereSphereCollision(*player, *weaponPickup) == true) {
+			player->setAltWeaponAvailable(true);
+			player->setWeaponType(1);
+			delete weaponPickup;
+			weaponPickup = nullptr;
+		}
+	}
+
 	//Bullet Hits Enemy
 	//Will include boss in this next
 	for (int i = 0; i < bullets.size(); ++i) {
@@ -279,7 +339,7 @@ void Scene5::Update(const float time) {
 		{
 			if (Physics::SphereSphereCollision(*bullets[i], *boss) == true) {
 				bullets.erase(bullets.begin() + i);
-				boss->takeDamage(0.25f);
+				boss->takeDamage(0.10f);
 				if (boss->getHealth() <= 0)
 				{
 					delete boss; boss = nullptr;
@@ -326,6 +386,15 @@ void Scene5::Update(const float time) {
 			}
 		}
 	}
+
+	// boss hits player
+	if (boss)
+	{
+		if (Physics::SphereSphereCollision(*boss, *player) == true) {
+			player->takeDamage(0.015f);
+		}
+	}
+
 
 	//Enemy Hits Player
 	for (int i = 0; i < enemies.size(); ++i) {
@@ -537,10 +606,35 @@ void Scene5::Render() {
 		}
 	}
 
+
+
+	//Draw collectibles
+	SDL_Rect collectibleRect;
+	Vec3 healthPickupScreenCoords;
+	Vec3 weaponPickupScreenCoords;
+	int collectibleW, collectibleH;
+
+	if (healthPickup) {
+		SDL_QueryTexture(healthPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		healthPickupScreenCoords = projectionMatrix * healthPickup->getPos();
+		collectibleRect.x = static_cast<int>(healthPickupScreenCoords.x) - collectibleW / 8;
+		collectibleRect.y = static_cast<int>(healthPickupScreenCoords.y) - collectibleH / 8;
+		collectibleRect.w = collectibleW / 4;
+		collectibleRect.h = collectibleH / 4;
+		SDL_RenderCopy(renderer, healthPickup->getTexture(), nullptr, &collectibleRect);
+	}
+
+	if (weaponPickup) {
+		SDL_QueryTexture(weaponPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		weaponPickupScreenCoords = projectionMatrix * weaponPickup->getPos();
+		collectibleRect.x = static_cast<int>(weaponPickupScreenCoords.x) - collectibleW / 4;
+		collectibleRect.y = static_cast<int>(weaponPickupScreenCoords.y) - collectibleH / 4;
+		collectibleRect.w = collectibleW / 2;
+		collectibleRect.h = collectibleH / 2;
+		SDL_RenderCopy(renderer, weaponPickup->getTexture(), nullptr, &collectibleRect);
+	}
 	//Update screen
 	SDL_RenderPresent(renderer);
-
-
 }
 
 

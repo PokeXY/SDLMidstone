@@ -48,8 +48,8 @@ std::vector<Bullet*> PlayerCharacter::FireWeapon() {
 			if (i == 1) { angle += 15; }
 			if (i == 2) { angle -= 30; }
 
-			float velx = 5.0f * cos(angle * M_PI / 180);
-			float vely = -5.0f * sin(angle * M_PI / 180);
+			float velx = 10.0f * cos(angle * M_PI / 180);
+			float vely = -10.0f * sin(angle * M_PI / 180);
 
 			float offsetx = 0.01 + (boundingSphere.r + newBullets[i]->getBoundingSphere().r) * cos(angle * M_PI / 180);
 			float offsety = 0.01 + (boundingSphere.r + newBullets[i]->getBoundingSphere().r) * sin(angle * M_PI / 180);
@@ -59,6 +59,8 @@ std::vector<Bullet*> PlayerCharacter::FireWeapon() {
 
 			newBullets[i]->setRemainingBounces(0);
 		}
+
+		angle += 15;
 	}
 	
 	return newBullets;

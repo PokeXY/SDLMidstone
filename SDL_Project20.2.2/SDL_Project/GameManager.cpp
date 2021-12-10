@@ -105,6 +105,14 @@ void GameManager::Run() {
 					sceneNum = 3;
 					break;
 
+				case SDL_SCANCODE_F4:
+					currentScene->OnDestroy();
+					delete currentScene;
+					currentScene = new Scene4(windowPtr->GetSDL_Window());
+					currentScene->OnCreate();
+					sceneNum = 3;
+					break;
+
 
 				case SDL_SCANCODE_F5:
 					currentScene->OnDestroy();

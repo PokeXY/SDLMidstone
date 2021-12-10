@@ -30,6 +30,9 @@ private:
 	SDL_Texture* health;
 	PlayerCharacter* player;
 
+	GameObject* healthPickup;
+	GameObject* weaponPickup;
+
 	BossCharacter* boss;
 
 	Level* level;

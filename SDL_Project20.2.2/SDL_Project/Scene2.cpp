@@ -145,35 +145,27 @@ bool Scene2::OnCreate() {
 		enemies[i]->setTexture(texturePtr);
 	}
 
+	//load collectibles
+	//health pickup
+	surfacePtr = IMG_Load("Art/BreadHealth.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
-	//load boss characters
-	//surfacePtr = IMG_Load("Art/flappybird1.png");
-	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	healthPickup = new GameObject();
 
-	//if (surfacePtr == nullptr) {
-	//	std::cerr << "Imgage does not work" << std::endl;
-	//	return false;
-	//}
-	//if (texturePtr == nullptr) {
-	//	printf("%s\n", SDL_GetError());
-	//	return false;
-	//}
+	SDL_FreeSurface(surfacePtr);
 
-	//SDL_FreeSurface(surfacePtr);
+	healthPickup->setPos(Vec3(16.0f, 9.0f, 0.0f));
+	healthPickup->setBoundingSphere(Sphere(0.5f));
+	healthPickup->setTexture(texturePtr);
 
-	//for (int i = 0; i < 1; ++i)
-	//{
-	//	boss = new BossCharacter;
-
-
-	//	boss->setPos(Vec3(xAxis - 15.0f, yAxis - 10.0f - 3.0f * i, 0.0f));
-	//	boss->setBoundingSphere(Sphere(0.5f));
-	//	boss->setTexture(texturePtr);
-
-	//	//boss->setPos(Vec3(10.0f, 10.0f, 10.0f));
-	//	//boss->setBoundingSphere(Sphere(0.5f));
-	//	//boss->setTexture(texturePtr);
-	//}
 
 
 	return true;
@@ -210,6 +202,8 @@ void Scene2::OnDestroy() {
 	SDL_DestroyRenderer(renderer);
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// UPDATE
+
 void Scene2::Update(const float time) {
 	/// This is the physics in the x and y dimension don't mess with z
 
@@ -229,6 +223,15 @@ void Scene2::Update(const float time) {
 	//	Physics::SimpleNewtonMotion(*boss, time);
 	//}
 
+	//Player Hits Collectibles
+	if (healthPickup) {
+		if (Physics::SphereSphereCollision(*player, *healthPickup) == true) {
+			if (player->restoreHealth(1.0f) == true) {
+				delete healthPickup;
+				healthPickup = nullptr;
+			}
+		}
+	}
 
 	//Player Hits Edge of Window Walls
 	//Potentially Obsolete with working circle rect collision
@@ -541,6 +544,22 @@ void Scene2::Render() {
 			}
 		}
 	}
+
+	//Draw collectibles
+	SDL_Rect collectibleRect;
+	Vec3 healthPickupScreenCoords;
+	int collectibleW, collectibleH;
+
+	if (healthPickup) {
+		SDL_QueryTexture(healthPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		healthPickupScreenCoords = projectionMatrix * healthPickup->getPos();
+		collectibleRect.x = static_cast<int>(healthPickupScreenCoords.x) - collectibleW / 8;
+		collectibleRect.y = static_cast<int>(healthPickupScreenCoords.y) - collectibleH / 8;
+		collectibleRect.w = collectibleW / 4;
+		collectibleRect.h = collectibleH / 4;
+		SDL_RenderCopy(renderer, healthPickup->getTexture(), nullptr, &collectibleRect);
+	}
+
 	//Update screen
 	SDL_RenderPresent(renderer);
 

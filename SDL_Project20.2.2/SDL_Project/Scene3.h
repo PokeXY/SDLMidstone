@@ -35,6 +35,9 @@ private:
 	std::vector<Bullet*> bullets;
 	std::vector<EnemyCharacter*> enemies;
 
+	GameObject* healthPickup;
+	GameObject* weaponPickup;
+
 	Plane* wallLeft;
 	Plane* wallRight;
 	Plane* wallTop;
