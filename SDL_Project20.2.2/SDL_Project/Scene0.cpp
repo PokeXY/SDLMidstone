@@ -106,7 +106,7 @@ bool Scene0::OnCreate(float GOF){
 	player->setPos(Vec3(5.0f, 5.0f, 0.0f));
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
-	player->setHealth(GOF);
+	player->setHealth(3.0f);
 
 	//character health icons
 	surfacePtr = IMG_Load("Art/BreadHealth.png");
