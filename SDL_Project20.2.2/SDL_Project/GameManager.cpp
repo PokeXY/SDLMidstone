@@ -119,7 +119,7 @@ void GameManager::Run() {
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene4(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = 3;
 					break;
 
