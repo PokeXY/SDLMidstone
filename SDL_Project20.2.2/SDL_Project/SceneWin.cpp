@@ -16,7 +16,7 @@ SceneWin::~SceneWin() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	OnDestroy();
 }
 
-bool SceneWin::OnCreate() {
+bool SceneWin::OnCreate(float GOF) {
 	int w, h;
 	float xAxis = 32.0f;
 	float yAxis = 18.0f;

@@ -51,13 +51,15 @@ private:
 public:
 	Scene5(SDL_Window* sdlWindow);
 	~Scene5();
-	bool OnCreate();
+	bool OnCreate(float GOF);
 	void OnDestroy();
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
 	bool nextScene();
+	float getHealth() { return player->getHealth(); }
+
 };
 
 #endif

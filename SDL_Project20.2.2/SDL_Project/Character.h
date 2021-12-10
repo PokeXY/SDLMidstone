@@ -19,6 +19,8 @@ public:
 	void takeDamage(float damageAmount_);
 
 	float getHealth() { return health; }
+
+	void setHealth(float h) { health = h; }
 };
 
 #endif

@@ -29,13 +29,14 @@ private:
 public:
 	SceneWin(SDL_Window* sdlWindow);
 	~SceneWin();
-	bool OnCreate();
+	bool OnCreate(float);
 	void OnDestroy();
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
 	bool nextScene() { return false; }
+	float getHealth() { return 0.0f; }
 };
 
 #endif

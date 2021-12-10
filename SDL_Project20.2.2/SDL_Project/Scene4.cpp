@@ -16,7 +16,7 @@ Scene4::~Scene4() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	OnDestroy();
 }
 
-bool Scene4::OnCreate() {
+bool Scene4::OnCreate(float GOF) {
 	int w, h;
 	float xAxis = 32.0f;
 	float yAxis = 18.0f;
@@ -105,6 +105,7 @@ bool Scene4::OnCreate() {
 	player->setPos(Vec3(3.0f, 7.0f, 0.0f));
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
+	player->setHealth(GOF);
 
 	//character health
 	surfacePtr = IMG_Load("Art/BreadHealth.png");

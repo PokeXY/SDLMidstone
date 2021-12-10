@@ -16,7 +16,7 @@ SceneD::~SceneD() {// Rember to delete every pointer NO MEMORY LEAKS!!!!!!
 	OnDestroy();
 }
 
-bool SceneD::OnCreate() {
+bool SceneD::OnCreate(float GOF) {
 	int w, h;
 	float xAxis = 32.0f;
 	float yAxis = 18.0f;

@@ -18,9 +18,16 @@ GameManager::GameManager() {
 	timer = nullptr;
 	isRunning = true;
 	currentScene = nullptr;
+	playerHealth = 3.0f;
 
 	//This will keep track of wich scene it is -1 will be the menu and -2 will be death -3 will be the win screen
 	sceneNum = -1;
+}
+
+float GameManager::health() {
+
+
+	return 3;
 }
 
 
@@ -52,13 +59,15 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	if (currentScene->OnCreate() == false) {
+	if (currentScene->OnCreate(playerHealth) == false) {
 		OnDestroy();
 		return false;
 	}
 
 	return true;
 }
+
+
 
 /// Here's the whole game
 void GameManager::Run() {
@@ -78,14 +87,14 @@ void GameManager::Run() {
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new SceneMenu(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = -1;
 					break;
 				case SDL_SCANCODE_F1:
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene1(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = 1;
 					break;
 
@@ -94,14 +103,15 @@ void GameManager::Run() {
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new SceneD(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					break;
 
 				case SDL_SCANCODE_F3:
+					playerHealth = currentScene->getHealth();
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene3(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = 3;
 					break;
 
@@ -115,18 +125,20 @@ void GameManager::Run() {
 
 
 				case SDL_SCANCODE_F5:
+					playerHealth = currentScene->getHealth();
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene5(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = 5;
 					break;
 
 				case SDL_SCANCODE_F10:
+					playerHealth = currentScene->getHealth();
 					currentScene->OnDestroy();
 					delete currentScene;
 					currentScene = new Scene0(windowPtr->GetSDL_Window());
-					currentScene->OnCreate();
+					currentScene->OnCreate(playerHealth);
 					sceneNum = 0;
 					break;
 
@@ -148,63 +160,70 @@ void GameManager::Run() {
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new SceneD(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = -2;
 		}
 		else if (currentScene->getDead() && sceneNum == -1) {
+			//Get the player health here from scene
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene0(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
+			//Set the player health here
 			sceneNum = 0;
 		}
 		else if (currentScene->getDead() && sceneNum <= -2) {
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new SceneMenu(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = -1;
 		}
 		if (currentScene->nextScene() && sceneNum == 0) { //Goes from scene 0 to scene 1
+			playerHealth = currentScene->getHealth();
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene1(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = 1;
 		}
 		else if (currentScene->nextScene() && sceneNum == 1) {//Goes from scene 1 to scene 2
+			playerHealth = currentScene->getHealth();
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene2(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = 2;
 		}
 		else if (currentScene->nextScene() && sceneNum == 2) {//Goes from scene 2 to scene 3
+			playerHealth = currentScene->getHealth();
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene3(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = 3;
 		}
 		else if (currentScene->nextScene() && sceneNum == 3) {//Goes from scene 3 to scene 4
+			playerHealth = currentScene->getHealth();
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene4(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = 4;
 		}
 		else if (currentScene->nextScene() && sceneNum == 4) {//Loads Final scene or boss room, Goes from scene 4 to scene 5
+			playerHealth = currentScene->getHealth();
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new Scene5(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = 5;
 		} 
 		else if (currentScene->nextScene() && sceneNum == 5) {//Loads the win screen
 			currentScene->OnDestroy();
 			delete currentScene;
 			currentScene = new SceneWin(windowPtr->GetSDL_Window());
-			currentScene->OnCreate();
+			currentScene->OnCreate(playerHealth);
 			sceneNum = -3;
 		}
 		 
