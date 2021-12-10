@@ -399,10 +399,12 @@ void Scene2::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here 
 	player->HandleEvents(sdlEvent, projectionMatrix);
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {
-		Bullet bullet = player->FireWeapon();
-		bullets.push_back(new Bullet(bullet));
-		int newBullet = bullets.size() - 1;
-		bullets[newBullet]->setTexture(croutonTexture);
+		std::vector<Bullet*> newBullets;
+		newBullets = player->FireWeapon();
+		for (Bullet* newBullets : newBullets) {
+			newBullets->setTexture(croutonTexture);
+			bullets.push_back(newBullets);
+		}
 	}
 }
 

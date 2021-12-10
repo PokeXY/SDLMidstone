@@ -1,7 +1,7 @@
 #include "PlayerCharacter.h"
 #include <SDL.h>
 
-PlayerCharacter::PlayerCharacter() : mouseDown(0), isInvincible(0), weaponType(0), lookDirection(0.0f), isDead(0)
+PlayerCharacter::PlayerCharacter() : mouseDown(0), isInvincible(0), weaponType(0), lookDirection(0.0f), isDead(0), altWeaponAvailable(0)
 {
 }
 
@@ -20,25 +20,48 @@ void PlayerCharacter::LookDirection(float x, float y) {
 	}
 }
 
-Bullet PlayerCharacter::FireWeapon() {
-	Bullet bullet;
+std::vector<Bullet*> PlayerCharacter::FireWeapon() {
+	newBullets.clear();
+
 	//weaponType 0 is standard weapon, can add other types
 	if (weaponType == 0) {	
 		float velx = 10.0f * cos(angle * M_PI / 180);
 		float vely = -10.0f * sin(angle * M_PI / 180);
 
-		bullet.setBoundingSphere(Sphere(0.25f));
+		newBullets.push_back(new Bullet);
+		newBullets[0]->setBoundingSphere(Sphere(0.25f));
 
-		float offsetx = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * cos(angle * M_PI / 180);
-		float offsety = 0.01 + (boundingSphere.r + bullet.getBoundingSphere().r) * sin(angle * M_PI / 180);
+		float offsetx = 0.01 + (boundingSphere.r + newBullets[0]->getBoundingSphere().r) * cos(angle * M_PI / 180);
+		float offsety = 0.01 + (boundingSphere.r + newBullets[0]->getBoundingSphere().r) * sin(angle * M_PI / 180);
 
-		bullet.setPos(Vec3(pos.x + offsetx, pos.y - offsety, 0.0f));
-		bullet.setVel(Vec3(velx, vely, 0.0f));
+		newBullets[0]->setPos(Vec3(pos.x + offsetx, pos.y - offsety, 0.0f));
+		newBullets[0]->setVel(Vec3(velx, vely, 0.0f));
 		
-		bullet.setRemainingBounces(3);
+		newBullets[0]->setRemainingBounces(3);
+	}
+	//weaponType 1 is shotgun
+	if (weaponType == 1) {
+		for (int i = 0; i < 3; ++i) {
+			newBullets.push_back(new Bullet);
+			newBullets[i]->setBoundingSphere(Sphere(0.25f));
+
+			if (i == 1) { angle += 15; }
+			if (i == 2) { angle -= 30; }
+
+			float velx = 5.0f * cos(angle * M_PI / 180);
+			float vely = -5.0f * sin(angle * M_PI / 180);
+
+			float offsetx = 0.01 + (boundingSphere.r + newBullets[i]->getBoundingSphere().r) * cos(angle * M_PI / 180);
+			float offsety = 0.01 + (boundingSphere.r + newBullets[i]->getBoundingSphere().r) * sin(angle * M_PI / 180);
+
+			newBullets[i]->setPos(Vec3(pos.x + offsetx, pos.y - offsety, 0.0f));
+			newBullets[i]->setVel(Vec3(velx, vely, 0.0f));
+
+			newBullets[i]->setRemainingBounces(0);
+		}
 	}
 	
-	return bullet;
+	return newBullets;
 }
 
 bool PlayerCharacter::restoreHealth(float healingAmount_) {

@@ -107,7 +107,7 @@ bool Scene0::OnCreate() {
 	player->setBoundingSphere(Sphere(0.5f));
 	player->setTexture(texturePtr);
 
-	//character health
+	//character health icons
 	surfacePtr = IMG_Load("Art/BreadHealth.png");
 	health = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
@@ -175,6 +175,46 @@ bool Scene0::OnCreate() {
 			//boss->setTexture(texturePtr);
 	}
 
+	//load collectibles
+	//health pickup
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	healthPickup = new GameObject();
+
+	SDL_FreeSurface(surfacePtr);
+
+	healthPickup->setPos(Vec3(16.0f, 9.0f, 0.0f));
+	healthPickup->setBoundingSphere(Sphere(0.5f));
+	healthPickup->setTexture(texturePtr);
+
+	//weapon pickup
+	surfacePtr = IMG_Load("Art/flappybird1.png");
+	texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
+
+	if (surfacePtr == nullptr) {
+		std::cerr << "Imgage does not work" << std::endl;
+		return false;
+	}
+	if (texturePtr == nullptr) {
+		printf("%s\n", SDL_GetError());
+		return false;
+	}
+	weaponPickup = new GameObject();
+
+	SDL_FreeSurface(surfacePtr);
+
+	weaponPickup->setPos(Vec3(16.0f, 12.0f, 0.0f));
+	weaponPickup->setBoundingSphere(Sphere(0.5f));
+	weaponPickup->setTexture(texturePtr);
 
 	return true;
 }
@@ -252,6 +292,26 @@ void Scene0::Update(const float time) {
 			Physics::SimpleNewtonMotion(*player, -time);
 		}
 	}
+
+	//Player Hits Collectibles
+	if (healthPickup) {
+		if (Physics::SphereSphereCollision(*player, *healthPickup) == true) {
+			if (player->restoreHealth(1.0f) == true) {
+				delete healthPickup;
+				healthPickup = nullptr;
+			}
+		}
+	}
+
+	if (weaponPickup) {
+		if (Physics::SphereSphereCollision(*player, *weaponPickup) == true) {
+			player->setAltWeaponAvailable(true);
+			player->setWeaponType(1);
+			delete weaponPickup;
+			weaponPickup = nullptr;
+		}
+	}
+	
 	//Bullets Movement
 	for (int i = 0; i < bullets.size(); ++i) {
 		Physics::SimpleNewtonMotion(*bullets[i], time);
@@ -399,10 +459,12 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent) { //Make stuff happen here 
 	player->HandleEvents(sdlEvent, projectionMatrix);
 
 	if (sdlEvent.type == SDL_EventType::SDL_MOUSEBUTTONDOWN) {
-		Bullet bullet = player->FireWeapon();
-		bullets.push_back(new Bullet(bullet));
-		int newBullet = bullets.size() - 1;
-		bullets[newBullet]->setTexture(croutonTexture);
+		std::vector<Bullet*> newBullets;
+		newBullets = player->FireWeapon();
+		for (int i = 0; i < newBullets.size(); ++i) {
+			newBullets[i]->setTexture(croutonTexture);
+			bullets.push_back(newBullets[i]);
+		}
 	}
 }
 
@@ -539,6 +601,33 @@ void Scene0::Render() {
 			}
 		}
 	}
+
+	//Draw collectibles
+	SDL_Rect collectibleRect;
+	Vec3 healthPickupScreenCoords;
+	Vec3 weaponPickupScreenCoords;
+	int collectibleW, collectibleH;
+
+	if (healthPickup) {
+		SDL_QueryTexture(healthPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		healthPickupScreenCoords = projectionMatrix * healthPickup->getPos();
+		collectibleRect.x = static_cast<int>(healthPickupScreenCoords.x) - collectibleW / 4;
+		collectibleRect.y = static_cast<int>(healthPickupScreenCoords.y) - collectibleH / 4;
+		collectibleRect.w = collectibleW / 2;
+		collectibleRect.h = collectibleH / 2;
+		SDL_RenderCopy(renderer, healthPickup->getTexture(), nullptr, &collectibleRect);
+	}
+
+	if (weaponPickup) {
+		SDL_QueryTexture(weaponPickup->getTexture(), nullptr, nullptr, &collectibleW, &collectibleH);
+		weaponPickupScreenCoords = projectionMatrix * weaponPickup->getPos();
+		collectibleRect.x = static_cast<int>(weaponPickupScreenCoords.x) - collectibleW / 4;
+		collectibleRect.y = static_cast<int>(weaponPickupScreenCoords.y) - collectibleH / 4;
+		collectibleRect.w = collectibleW / 2;
+		collectibleRect.h = collectibleH / 2;
+		SDL_RenderCopy(renderer, weaponPickup->getTexture(), nullptr, &collectibleRect);
+	}
+
 	//Update screen
 	SDL_RenderPresent(renderer);
 

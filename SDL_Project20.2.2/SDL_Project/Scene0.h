@@ -35,7 +35,8 @@ private:
 	PlayerCharacter* player;
 	BossCharacter* boss;
 
-
+	GameObject* healthPickup;
+	GameObject* weaponPickup;
 
 	Level* level;
 
