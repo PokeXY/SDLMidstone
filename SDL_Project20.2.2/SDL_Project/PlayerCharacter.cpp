@@ -86,7 +86,7 @@ void PlayerCharacter::dead() {
 };
 
 void PlayerCharacter::HandleEvents(const SDL_Event& sdlEvent, const Matrix4 projectionMatrix) {
-	if (sdlEvent.type == SDL_KEYDOWN) {\
+	if (sdlEvent.type == SDL_KEYDOWN) {
 		//Movement
 		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
 			vel.y = moveSpeed;
