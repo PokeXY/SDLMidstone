@@ -18,6 +18,7 @@ private:
 	class Timer *timer;
 	bool isRunning;
 	int sceneNum;
+	float playerHealth;
 	Scene *currentScene;
 
 public:
@@ -26,6 +27,7 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 	void ToggleFullscreen(SDL_Window* Window);
+	float health();
 	
 
 	void Run();

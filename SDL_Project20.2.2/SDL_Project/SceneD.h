@@ -29,13 +29,15 @@ private:
 public:
 	SceneD(SDL_Window* sdlWindow);
 	~SceneD();
-	bool OnCreate();
+	bool OnCreate(float GOF);
 	void OnDestroy();
 	void Update(const float time);
 	void Render();
 	void HandleEvents(const SDL_Event& sdlEvent);
 	bool getDead();
 	bool nextScene() { return false; }
+	float getHealth() { return 0.0f; }
+
 };
 
 #endif
