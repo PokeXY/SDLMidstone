@@ -90,57 +90,57 @@ void GameManager::Run() {
 					currentScene->OnCreate(playerHealth);
 					sceneNum = -1;
 					break;
-				case SDL_SCANCODE_F1:
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene1(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					sceneNum = 1;
-					break;
+				//case SDL_SCANCODE_F1:
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new Scene1(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	sceneNum = 1;
+				//	break;
 
-					// If we need more scenes later I don't wanna rewrite this 
-				case SDL_SCANCODE_P:
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new SceneD(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					break;
+				//	// If we need more scenes later I don't wanna rewrite this 
+				//case SDL_SCANCODE_P:
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new SceneD(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	break;
 
-				case SDL_SCANCODE_F3:
-					playerHealth = currentScene->getHealth();
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene3(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					sceneNum = 3;
-					break;
+				//case SDL_SCANCODE_F3:
+				//	playerHealth = currentScene->getHealth();
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new Scene3(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	sceneNum = 3;
+				//	break;
 
-				case SDL_SCANCODE_F4:
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene4(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					sceneNum = 3;
-					break;
+				//case SDL_SCANCODE_F4:
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new Scene4(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	sceneNum = 3;
+				//	break;
 
 
-				case SDL_SCANCODE_F5:
-					playerHealth = currentScene->getHealth();
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene5(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					sceneNum = 5;
-					break;
+				//case SDL_SCANCODE_F5:
+				//	playerHealth = currentScene->getHealth();
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new Scene5(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	sceneNum = 5;
+				//	break;
 
-				case SDL_SCANCODE_F10:
-					playerHealth = currentScene->getHealth();
-					currentScene->OnDestroy();
-					delete currentScene;
-					currentScene = new Scene0(windowPtr->GetSDL_Window());
-					currentScene->OnCreate(playerHealth);
-					sceneNum = 0;
-					break;
+				//case SDL_SCANCODE_F10:
+				//	playerHealth = currentScene->getHealth();
+				//	currentScene->OnDestroy();
+				//	delete currentScene;
+				//	currentScene = new Scene0(windowPtr->GetSDL_Window());
+				//	currentScene->OnCreate(playerHealth);
+				//	sceneNum = 0;
+				//	break;
 
 
 				case SDL_SCANCODE_RETURN:

@@ -171,16 +171,7 @@ bool Scene4::OnCreate(float GOF) {
 	//surfacePtr = IMG_Load("Art/flappybird1.png");
 	//texturePtr = SDL_CreateTextureFromSurface(renderer, surfacePtr);
 
-	if (surfacePtr == nullptr) {
-		std::cerr << "Imgage does not work" << std::endl;
-		return false;
-	}
-	if (texturePtr == nullptr) {
-		printf("%s\n", SDL_GetError());
-		return false;
-	}
-
-	SDL_FreeSurface(surfacePtr);
+	
 
 	//for (int i = 0; i < 1; ++i)
 	//{
